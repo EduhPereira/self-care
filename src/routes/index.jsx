@@ -1,4 +1,11 @@
 import { Switch, Route } from "react-router";
+import { Login } from '../pages/login'
 export const Routes = () => (
-  <Switch>{/* Insert the Routes Here With the Pages */}</Switch>
+  <Switch>
+
+    <Route path="/login">
+      <Login />
+    </Route>
+
+  </Switch>
 );

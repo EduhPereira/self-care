@@ -1,4 +1,9 @@
 import { Switch, Route } from "react-router";
+import { Habits } from "../pages/habits";
 export const Routes = () => (
-  <Switch>{/* Insert the Routes Here With the Pages */}</Switch>
+  <Switch>
+    <Route path="/habits">
+      <Habits/>
+    </Route>
+  </Switch>
 );

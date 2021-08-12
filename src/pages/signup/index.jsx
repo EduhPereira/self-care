@@ -4,10 +4,11 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "../../services/api";
 import { useHistory } from "react-router-dom";
 import { Container } from "./style"
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 export const Signup = () => {
 
+    // contrução do objeto e verificação
     const schema = yup.object().shape({
         username: yup.string().required("Campo Obrigatório."), // regex nome sem caractere especial e spaço
         email: yup.string().email("Email Inválido").required("Campo Obrigatório."),
@@ -21,8 +22,11 @@ export const Signup = () => {
 
     const history = useHistory();
 
+    // requisição de cadastro
     const onSubmit = ({ username, email, password }) => {
+        // formando objeto com a penas as informações necessárias para a api
         const user = { username, email, password }
+
         api.post("/users/", user).then(res => {
             console.log(res)
             return history.push("/login")

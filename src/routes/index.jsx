@@ -1,10 +1,12 @@
 import { LandingPage } from "../pages/landing-page";
 import { Switch, Route } from "react-router";
-import { Signup } from "../pages/signup";
-
+import { Login } from '../pages/login'
 export const Routes = () => (
   <Switch>
-    <Route exact path="/" component={LandingPage} />
-    <Route path="/signup" component={Signup} />
+
+    <Route path="/login">
+      <Login />
+    </Route>
+
   </Switch>
 );

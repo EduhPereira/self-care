@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: "https://kabit-api.herokuapp.com",
-});
+    baseURL: 'https://kabit-api.herokuapp.com'
+})
+

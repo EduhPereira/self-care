@@ -2,13 +2,14 @@ import { Container, Button } from "./styles"
 import { useEffect, useState } from "react"
 import { api } from "../../services/api"
 import { CardGroup } from "../../components/cardGroup"
+import { useUser } from "../../providers/UserProvider"
 
 export const Groups = () => {
 
     const [groups, setGroups] = useState([])
     const [filteredGroups, setFilteredGroups] = useState([])
     const [showList, setShowList] = useState(true)
-    const userId = 1636 //1636 //1204
+    const { Id } = useUser()
 
     const getGroups = () => {
         api

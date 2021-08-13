@@ -2,14 +2,14 @@ import { Container } from "./styles"
 import { useHistory } from "react-router-dom"
 import { api } from "../../services/api"
 import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup"
+import { useUser } from "../../providers/UserProvider"
 
 
 export const CardGroup = ({ group }) => {
 
     const { setCurrentGroup } = UseCurrentGroup()
     const history = useHistory()
-    //subtituir por ´useState(JSON.parse(localStorage.getItem("@KenzieHub:token")))´
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjI5MzAwMTA0LCJqdGkiOiI5YWY1OGJkZmEyMzQ0MGM3YTg3OWU2YzU2ODI5ZTZiZSIsInVzZXJfaWQiOjE2MzZ9.nDC4jmtydOoyTQ-wbCSYNPH9Hdft9d0fDiKBz022nWE"
+    const { token } = useUser()
 
     const handleClickContainer = () => {
         history.push(`/groups/${group.id}`)

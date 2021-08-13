@@ -9,6 +9,10 @@ export const Container = styled.div`
     padding: 5px;
     text-align: end;
 
+    div {
+        cursor: pointer;
+    }
+
     h1 {
         font-weight: normal;
         font-size: 14px;
@@ -34,5 +38,6 @@ export const Container = styled.div`
         border: none;
         color: #fff;
         font-weight: 600;
+        cursor: pointer;
     }
 `

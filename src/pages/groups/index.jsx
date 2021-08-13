@@ -9,7 +9,7 @@ export const Groups = () => {
     const [groups, setGroups] = useState([])
     const [filteredGroups, setFilteredGroups] = useState([])
     const [showList, setShowList] = useState(true)
-    const { Id } = useUser()
+    const { id } = useUser()
 
     const getGroups = () => {
         api
@@ -17,7 +17,7 @@ export const Groups = () => {
             .then(res => {
                 setGroups(res.data.results)
                 setFilteredGroups(res.data.results.filter(group => {
-                    if (group.users_on_group.find(user => user.id === userId)) {
+                    if (group.users_on_group.find(user => user.id === id)) {
                         return true
                     }
                 }))

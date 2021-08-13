@@ -19,7 +19,7 @@ export const CardGroup = ({ group }) => {
     const handleClickSubscribe = () => {
         api.post(`groups/${group.id}/subscribe/`, {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         }).then(res => console.log(res)).catch(err => console.log(err))
     }

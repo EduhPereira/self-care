@@ -1,3 +1,4 @@
+import { LandingPage } from "../pages/landing-page";
 import { Switch, Route } from "react-router";
 import { Habits } from "../pages/habits";
 export const Routes = () => (

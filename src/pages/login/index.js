@@ -1,14 +1,18 @@
 import { api } from "../../services/api";
-import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Background, Container } from "./styles";
 import logo from "../../assets/self-care.png";
 import loginImg from '../../assets/login.png'
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import jwt_decode from 'jwt-decode'
+import { useUser } from "../../providers/UserProvider";
 
 export const Login = () => {
+  const {setId, setToken} = useUser()
+  const history = useHistory()
+
   const schema = yup.object().shape({
     username: yup.string().required("*Campo obrigatório"),
     password: yup.string().required("*Campo obrigatório"),
@@ -24,8 +28,21 @@ export const Login = () => {
 
   const onSubmit = async ({ username, password }) => {
     const response = await api.post("/sessions/", { username, password });
-    console.log(response.data.access);
+    const access = await response.data.access
+    const token =  access
+    const decode = jwt_decode(token)
+    const {user_id} = decode
+
+    setId(user_id)
+    setToken(token)
+
+    localStorage.setItem('token', token)
+    history.push('/dashboard')
+    
   };
+
+
+  
 
   return (
     <Container>
@@ -50,7 +67,7 @@ export const Login = () => {
         </form>
 
         <p>Não possui conta?</p>
-        <Link>Cadastre-se</Link>
+        <Link to="/signup">Cadastre-se</Link>
       </section>
     </Container>
   );

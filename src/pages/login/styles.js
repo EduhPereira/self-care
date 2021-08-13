@@ -16,6 +16,7 @@ export const Container = styled.div`
   justify-content: center;
   margin: auto;
   height: 100vh;
+  text-align: center;
 
   span {
     margin-left: 10px;

@@ -7,10 +7,8 @@ import logo from "../../assets/self-care.png";
 import loginImg from '../../assets/login.png'
 import { Link, useHistory } from "react-router-dom";
 import jwt_decode from 'jwt-decode'
-import { useUser } from "../../providers/UserProvider";
 
 export const Login = () => {
-  const {setId, setToken} = useUser()
   const history = useHistory()
 
   const schema = yup.object().shape({
@@ -33,16 +31,13 @@ export const Login = () => {
     const decode = jwt_decode(token)
     const {user_id} = decode
 
-    setId(user_id)
-    setToken(token)
-
     localStorage.setItem('token', token)
+    localStorage.setItem('user_id', user_id)
     history.push('/dashboard')
     
   };
 
 
-  
 
   return (
     <Container>

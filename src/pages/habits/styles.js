@@ -43,4 +43,39 @@ export const Card = styled.div`
   height: 150px;
   box-shadow: 0 0 4px #696969;
   border-radius: 10px;
+  padding: 10px;
+
+  .Title{
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  p{
+    margin-bottom: 10px;
+  }
 `;
+
+export const Icons = styled.div`
+  text-align: right;
+  margin-top: 20px;
+
+  svg{
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .Delete{
+    color: #931706;
+  }
+
+  .Edit{
+    color: #937703;
+  }
+
+  .Check{
+    color: #145092;
+  }
+
+`

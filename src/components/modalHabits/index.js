@@ -33,6 +33,7 @@ export const ModalHabits = ({ habitsF, visible, setVisible, habit }) => {
     );
 
     habitsF();
+    setVisible(false)
   };
 
   return (

@@ -94,12 +94,9 @@ export const Groups = () => {
                 <span onClick={() => setShowModal(true)}>Criar seu grupo</span>
             </section>
             <section>
-                {(showList ? (groups.map(item => {
-                    if (!!item.users_on_group.find(user => user.id === Number(id))) {
-                        return <CardGroup key={item.id} group={item} registered />
-                    }
-                    return <CardGroup key={item.id} group={item} />
-                })) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
+                {(showList ? (groups.map(item => (
+                    !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup key={item.id} group={item} getGroups={getGroups} />
+                ))) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
                     <CardGroup key={item.id} group={item} registered />
                 )) : (<h1>Você não possui grupos</h1>))
                 )}

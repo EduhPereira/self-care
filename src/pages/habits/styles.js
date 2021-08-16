@@ -11,6 +11,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .MuiCircularProgress-root{
+    margin-top: 150px;
+  }
+  
 `;
 
 export const ContentCategory = styled.div`

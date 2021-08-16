@@ -6,12 +6,14 @@ import { FaCheck, FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { Modal } from "../../components/Modal";
 import { ModalHabits } from "../../components/modalHabits";
+import { CircularProgress } from "@material-ui/core";
 
 export const Habits = () => {
   const { id, token } = useUser();
   const [habitsList, setHabitsList] = useState([]);
   const [habitEdit, setHabitEdit] = useState([]);
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const habits = async () => {
     const response = await api.get("/habits/personal/", {
@@ -22,7 +24,7 @@ export const Habits = () => {
         completed: false,
       },
     });
-
+    setLoading(false)
     setHabitsList(response.data);
   };
 
@@ -56,42 +58,52 @@ export const Habits = () => {
   };
 
   const openUpdateHabit = (habit) => {
-    setVisible(true)
+    setVisible(true);
     setHabitEdit(habit);
-    console.log(visible)
+    console.log(visible);
   };
-
-  
 
   return (
     <Container>
-      <ModalHabits habitsF={habits} setVisible={setVisible} visible={visible} habit={habitEdit}/>
+      <ModalHabits
+        habitsF={habits}
+        setVisible={setVisible}
+        visible={visible}
+        habit={habitEdit}
+      />
       <ContentCategory>
         <h3>Categorias</h3>
       </ContentCategory>
 
-      <Cards>
-        {habitsList.map((el) => {
-          return (
-            <Card>
-              <p className="Title">{el.title}</p>
-              <p>Dificuldade: {el.difficulty}</p>
-              <p>Categoria: {el.category}</p>
-              <Icons>
-                <RiDeleteBin2Line
-                  className="Delete"
-                  onClick={() => deleteHabit(el.id)}
-                />
-                <FaEdit className="Edit" onClick={() => openUpdateHabit(el)} />
-                <FaCheck
-                  className="Check"
-                  onClick={() => checkHabit(el.how_much_achieved, el.id)}
-                />
-              </Icons>
-            </Card>
-          );
-        })}
-      </Cards>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Cards>
+          {habitsList.map((el) => {
+            return (
+              <Card>
+                <p className="Title">{el.title}</p>
+                <p>Dificuldade: {el.difficulty}</p>
+                <p>Categoria: {el.category}</p>
+                <Icons>
+                  <RiDeleteBin2Line
+                    className="Delete"
+                    onClick={() => deleteHabit(el.id)}
+                  />
+                  <FaEdit
+                    className="Edit"
+                    onClick={() => openUpdateHabit(el)}
+                  />
+                  <FaCheck
+                    className="Check"
+                    onClick={() => checkHabit(el.how_much_achieved, el.id)}
+                  />
+                </Icons>
+              </Card>
+            );
+          })}
+        </Cards>
+      )}
     </Container>
   );
 };

@@ -74,7 +74,7 @@ export const Groups = () => {
                             <option value="Esporte">Esporte</option>
                         </select>
                         <ContainerButtons>
-                            <ButtonCancel onClick={() => setShowModal(false)}> Cancelar</ButtonCancel>
+                            <ButtonCancel type="button" onClick={() => setShowModal(false)}> Cancelar</ButtonCancel>
                             <ButtonUpdate type="submit" onClick={() => setShowModal(false)}>Criar</ButtonUpdate>
                         </ContainerButtons>
                     </Form>

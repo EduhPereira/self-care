@@ -17,11 +17,11 @@ export const CardGroup = ({ group }) => {
     }
 
     const handleClickSubscribe = () => {
-        api.post(`groups/${group.id}/subscribe/`, {
+        api.post(`/groups/${group.id}/subscribe/`, null, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        }).then(res => console.log(res)).catch(err => console.log(err))
+        }).then(res => console.log(res, 'teste')).catch(err => console.log(err))
     }
 
     return (

@@ -22,6 +22,7 @@ export const ModalHabits = ({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -33,7 +34,7 @@ export const ModalHabits = ({
     setVisible(false);
   };
 
-  const updateHabit = async (dados) => {
+  const updateHabit = async (dados, e) => {
     console.log(dados);
     const { id } = habit;
     const response = await api.patch(`/habits/${id}/`, dados, {
@@ -41,12 +42,12 @@ export const ModalHabits = ({
         Authorization: `Bearer ${token}`,
       },
     });
-
+    e.target.reset()
     habitsF();
     setVisible(false);
   };
 
-  const createHabit = async ({ title, category, difficulty, frequency }) => {
+  const createHabit = async ({ title, category, difficulty, frequency }, e) => {
     const response = await api.post(
       `/habits/`,
       {
@@ -64,7 +65,7 @@ export const ModalHabits = ({
         },
       }
     );
-
+    e.target.reset()
     habitsF();
     setVisible(false);
   };

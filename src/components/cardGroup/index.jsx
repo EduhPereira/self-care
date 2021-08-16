@@ -5,7 +5,7 @@ import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup"
 import { useUser } from "../../providers/UserProvider"
 
 
-export const CardGroup = ({ group }) => {
+export const CardGroup = ({ group, registered }) => {
 
     const { setCurrentGroup } = UseCurrentGroup()
     const history = useHistory()
@@ -23,7 +23,6 @@ export const CardGroup = ({ group }) => {
             }
         }).then(res => console.log(res, 'teste')).catch(err => console.log(err))
     }
-
     return (
         <Container>
             <div onClick={handleClickContainer}>
@@ -31,7 +30,7 @@ export const CardGroup = ({ group }) => {
                 <p>Descrição: {group.description}</p>
                 <p>Categoria: {group.category}</p>
             </div>
-            <button className="button_group" onClick={handleClickSubscribe}>Participar</button>
+            {!(!!registered) && <button className="button_group" onClick={handleClickSubscribe}>Participar</button>}
         </Container>
     )
 }

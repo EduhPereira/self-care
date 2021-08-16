@@ -39,11 +39,13 @@ export const Group = () => {
             </section>
             <section>
                 {showList ? (goalsList.map(goal => (
+                    // componente goal = tag ul
                     <ul>
                         <li>ID: {goal.id}</li>
                         <li>Nome: {goal.title}</li>
                     </ul>
                 ))) : (activitiesList.map(activity => (
+                    // componente activity = tag ul
                     <ul>
                         <li>ID: {activity.id}</li>
                         <li>Nome: {activity.title}</li>

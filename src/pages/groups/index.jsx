@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 export const Groups = () => {
 
     const [groups, setGroups] = useState([])
-    const [filteredGroups, setFilteredGroups] = useState([])
+    const [registeredGroups, setRegisteredGroups] = useState([])
     const [showList, setShowList] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const { id, token } = useUser()
@@ -38,17 +38,24 @@ export const Groups = () => {
             .get("/groups/")
             .then(res => {
                 setGroups(res.data.results)
-                setFilteredGroups(res.data.results.filter(group => {
-                    if (group.users_on_group.find(user => user.id === id)) {
-                        return true
-                    }
-                }))
             })
             .catch(err => console.log(err))
     }
 
+    const getSubscriptions = () => {
+        api.get("/groups/subscriptions/", {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).then(res => {
+            setRegisteredGroups(res.data)
+        }
+        ).catch(err => console.log(err))
+    }
+
     useEffect(() => {
         getGroups()
+        getSubscriptions()
     }, [])
 
     return (
@@ -87,10 +94,13 @@ export const Groups = () => {
                 <span onClick={() => setShowModal(true)}>Criar seu grupo</span>
             </section>
             <section>
-                {(showList ? (groups.map(item => (
-                    <CardGroup key={item.id} group={item} />
-                ))) : (filteredGroups.length > 0 ? filteredGroups.map(item => (
-                    <CardGroup key={item.id} group={item} />
+                {(showList ? (groups.map(item => {
+                    if (!!item.users_on_group.find(user => user.id === Number(id))) {
+                        return <CardGroup key={item.id} group={item} registered />
+                    }
+                    return <CardGroup key={item.id} group={item} />
+                })) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
+                    <CardGroup key={item.id} group={item} registered />
                 )) : (<h1>Você não possui grupos</h1>))
                 )}
             </section>

@@ -4,12 +4,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Background, Container } from "./styles";
 import logo from "../../assets/self-care.png";
-import loginImg from '../../assets/login.png'
+import loginImg from "../../assets/login.png";
 import { Link, useHistory } from "react-router-dom";
-import jwt_decode from 'jwt-decode'
+import jwt_decode from "jwt-decode";
 
 export const Login = () => {
-  const history = useHistory()
+  const history = useHistory();
 
   const schema = yup.object().shape({
     username: yup.string().required("*Campo obrigatório"),
@@ -26,23 +26,20 @@ export const Login = () => {
 
   const onSubmit = async ({ username, password }) => {
     const response = await api.post("/sessions/", { username, password });
-    const access = await response.data.access
-    const token =  access
-    const decode = jwt_decode(token)
-    const {user_id} = decode
+    const access = await response.data.access;
+    const token = access;
+    const decode = jwt_decode(token);
+    const { user_id } = decode;
 
-    localStorage.setItem('token', token)
-    localStorage.setItem('user_id', user_id)
-    history.push('/dashboard')
-    
+    localStorage.setItem("token", token);
+    localStorage.setItem("user_id", user_id);
+    history.push("/dashboard");
   };
-
-
 
   return (
     <Container>
       <Background>
-        <img src={loginImg}/>
+        <img src={loginImg} />
       </Background>
 
       <section className="login">
@@ -53,11 +50,15 @@ export const Login = () => {
           <label>
             Usuário: <span>{errors.username?.message}</span>
           </label>
-          <input type="text" {...register("username")} placeholder="Seu nome"/>
+          <input type="text" {...register("username")} placeholder="Seu nome" />
           <label>
             Senha: <span>{errors.password?.message}</span>
           </label>
-          <input type="password" {...register("password")} placeholder="Sua senha"/>
+          <input
+            type="password"
+            {...register("password")}
+            placeholder="Sua senha"
+          />
           <button type="submit">Entrar</button>
         </form>
 

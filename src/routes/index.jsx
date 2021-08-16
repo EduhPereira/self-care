@@ -26,3 +26,18 @@ export const Routes = () => (
     </Route>
   </Switch>
 );
+
+// Rotas para colocar na Dashboard
+// import { Group } from "../pages/group";
+// import { Groups } from "../pages/groups";
+
+// export const Routes = () => (
+//   <Switch>
+//     <Route exact path="/groups">
+//       <Groups />
+//     </Route>
+//     <Route exact path="/groups/:id">
+//       <Group />
+//     </Route>
+//   </Switch>
+// )

@@ -1,11 +1,14 @@
 import { UserProvider } from "./UserProvider"
 import { ModalProvider } from './ModalProvider'
+import { CurrentGroupProvider } from "./currentGroup/currentGroup";
 
-export const Providers = ({children}) => {
-    return(
+export const Providers = ({ children }) => {
+    return (
         <UserProvider>
             <ModalProvider>
-                {children}
+                <CurrentGroupProvider>
+                    {children}
+                </CurrentGroupProvider>
             </ModalProvider>
         </UserProvider>
     )

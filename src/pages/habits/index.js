@@ -12,6 +12,7 @@ export const Habits = () => {
   const [habitsList, setHabitsList] = useState([]);
   const [habitEdit, setHabitEdit] = useState([]);
   const [visible, setVisible] = useState(false)
+  const [titleModal, setTitleModal] = useState('')
 
   const habits = async () => {
     const response = await api.get("/habits/personal/", {
@@ -41,7 +42,6 @@ export const Habits = () => {
   };
 
   const checkHabit = async (value, id) => {
-    console.log(value);
     const response = await api.patch(
       `/habits/${id}/`,
       { how_much_achieved: value + 1, achieved: true },
@@ -56,16 +56,22 @@ export const Habits = () => {
   };
 
   const openUpdateHabit = (habit) => {
+    setTitleModal('Edite seu hábito:')
     setVisible(true)
     setHabitEdit(habit);
-    console.log(visible)
   };
+
+  const openNewHabit = () => {
+    setTitleModal('Crie seu hábito:')
+    setVisible(true)
+  }
 
   
 
   return (
     <Container>
-      <ModalHabits habitsF={habits} setVisible={setVisible} visible={visible} habit={habitEdit}/>
+      <ModalHabits titleModal={titleModal} habitsF={habits} setVisible={setVisible} visible={visible} habit={habitEdit}/>
+      <button onClick={openNewHabit}>Novo Habito</button>
       <ContentCategory>
         <h3>Categorias</h3>
       </ContentCategory>

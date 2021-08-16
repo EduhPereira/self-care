@@ -61,6 +61,11 @@ export const Container = styled.div`
     height: 52px;
     border-radius: 50px;
     margin-bottom: 27px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    :hover {
+      background-color: #93b32b;
+    }
   }
 
   form input {

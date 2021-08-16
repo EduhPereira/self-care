@@ -37,7 +37,7 @@ export const ModalHabits = ({
       }
     );
 
-    habitsF();
+    await habitsF();
     setVisible(false);
     setCategory("");
     setTitle("");
@@ -64,7 +64,7 @@ export const ModalHabits = ({
       }
     );
 
-    habitsF();
+    await habitsF();
     setVisible(false);
     setCategory("");
     setTitle("");

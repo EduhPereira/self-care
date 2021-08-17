@@ -85,7 +85,7 @@ export const Groups = () => {
                             <label htmlFor="name">Nome: <span>{errors.name?.message}</span></label>
                             <input type="text" {...register("name")} />
 
-                            <label htmlFor="description">Categoria: <span>{errors.description?.message}</span></label>
+                            <label htmlFor="description">Descrição: <span>{errors.description?.message}</span></label>
                             <input type="text" {...register("description")} />
 
                             <label htmlFor="category">Categoria: <span>{errors.category?.message}</span></label>

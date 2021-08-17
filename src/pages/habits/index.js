@@ -119,9 +119,9 @@ export const Habits = () => {
               {habitsList.map((el) => {
                 return (
                   <Card>
-                    <p className="Title">{el.title}</p>
-                    <p>Dificuldade: {el.difficulty}</p>
-                    <p>Categoria: {el.category}</p>
+                    <p className="Title"><span>Hábito: </span>{el.title}</p>
+                    <p className="Difficulty"><span>Dificuldade:</span> {el.difficulty}</p>
+                    <p className="Category"><span>Categoria:</span> {el.category}</p>
                     <Icons>
                       <RiDeleteBin2Line
                         className="Delete"

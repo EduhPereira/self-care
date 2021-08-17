@@ -11,6 +11,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Poppins', sans-serif;
 
   .MuiCircularProgress-root{
     margin-top: 150px;
@@ -25,14 +26,18 @@ export const ContentCategory = styled.div`
 
   h3 {
     margin-right: 10px;
+    font-weight: 400;
   }
 
   select {
     text-align: center;
     padding: 6px 10px;
-    width: 90px;
+    width: 100px;
     outline: none;
     margin-left: 10px;
+    border: 1px solid  #696969;
+    background: white;
+    font-size: 1rem;
   }
   option {
     background: white;
@@ -45,7 +50,7 @@ export const Cards = styled.div``;
 export const Card = styled.div`
   margin-top: 40px;
   width: 250px;
-  height: 150px;
+  height: 165px;
   box-shadow: 0 0 4px #696969;
   border-radius: 10px;
   padding: 10px;
@@ -55,6 +60,21 @@ export const Card = styled.div`
     margin-bottom: 20px;
   }
 
+  .Title span{
+    color: #071865;
+    font-weight: bold;
+  }
+
+  .Difficulty span{
+    color: #770B04;
+    font-weight: bold;
+  }
+
+  .Category span{
+    color: #775C00;
+    font-weight: bold;
+  }
+
   p{
     margin-bottom: 10px;
   }
@@ -62,25 +82,25 @@ export const Card = styled.div`
 
 export const Icons = styled.div`
   text-align: right;
-  margin-top: 20px;
+  margin-right: -2px;
 
   svg{
     margin: 5px;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
   }
 
   .Delete{
-    color: #931706;
+    color: #D81C48;
   }
 
   .Edit{
-    color: #937703;
+    color: #F7A902;
   }
 
   .Check{
-    color: #145092;
+    color: #285BD3;
   }
 
 `

@@ -1,7 +1,9 @@
-import { useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { Container, Buttons } from "./styles";
 import { api } from "../../services/api";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const ModalHabits = ({
   habitsF,
@@ -10,42 +12,42 @@ export const ModalHabits = ({
   habit,
   titleModal,
 }) => {
+  const schema = yup.object().shape({
+    title: yup.string().required("Campo obrigatório."),
+    difficulty: yup.string().required("Campo obrigatório."),
+    frequency: yup.string().required("Escolha uma opção."),
+    category: yup.string().required("Escolha uma opção."),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
   const { token, id } = useUser();
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [difficulty, setDifficulty] = useState("");
-  const [frequency, setFrequency] = useState("");
 
   const closeModal = () => {
     setVisible(false);
   };
 
-  const updateHabit = async (value) => {
+  const updateHabit = async (dados, e) => {
+    console.log(dados);
     const { id } = habit;
-    const response = await api.patch(
-      `/habits/${id}/`,
-      {
-        title: title,
-        category: category,
-        difficulty: difficulty,
-        frequency: frequency,
+    const response = await api.patch(`/habits/${id}/`, dados, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    await habitsF();
+    });
+    e.target.reset()
+    habitsF();
     setVisible(false);
-    setCategory("");
-    setTitle("");
-    setDifficulty("");
-    setFrequency("");
   };
 
-  const createHabit = async () => {
+  const createHabit = async ({ title, category, difficulty, frequency }, e) => {
     const response = await api.post(
       `/habits/`,
       {
@@ -63,54 +65,49 @@ export const ModalHabits = ({
         },
       }
     );
-
-    await habitsF();
+    e.target.reset()
+    habitsF();
     setVisible(false);
-    setCategory("");
-    setTitle("");
-    setDifficulty("");
-    setFrequency("");
   };
 
   return (
     <Container visible={visible}>
-      <form>
+      <form
+        onSubmit={
+          titleModal === "Edite seu hábito:"
+            ? handleSubmit(updateHabit)
+            : handleSubmit(createHabit)
+        }
+      >
         <h2>{titleModal}</h2>
         <label>Título:</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <input type="text" {...register("title")} />
         <label>Categoria:</label>
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
+        <select name="category" {...register("category")}>
+          <option value="">--Escolha uma categoria--</option>
+          <option value="Saúde">Saúde</option>
+          <option value="Música">Música</option>
+          <option value="Aventura">Aventura</option>
+          <option value="Estudos">Estudos</option>
+          <option value="Religão">Religão</option>
+          <option value="Esporte">Esporte</option>
+        </select>
         <label>Dificuldade:</label>
-        <input
-          type="text"
-          value={difficulty}
-          onChange={(e) => setDifficulty(e.target.value)}
-        />
+        <select name="difficulty" {...register("difficulty")}>
+          <option value="">-- Dificuldade --</option>
+          <option value="Fácil">Fácil</option>
+          <option value="Médio">Médio</option>
+          <option value="Difícil">Difícil</option>
+        </select>
         <label>Frequência:</label>
-        <input
-          type="text"
-          value={frequency}
-          onChange={(e) => setFrequency(e.target.value)}
-        />
+        <input type="text" {...register("frequency")} />
         <Buttons>
           {titleModal === "Edite seu hábito:" ? (
-            <button
-              onClick={() => updateHabit(habit)}
-              className="update"
-              type="button"
-            >
+            <button className="update" type="submit">
               Atualizar
             </button>
           ) : (
-            <button onClick={createHabit} className="update" type="button">
+            <button className="update" type="submit">
               Enviar
             </button>
           )}

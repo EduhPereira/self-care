@@ -10,6 +10,7 @@ import { NotFoundMsg } from "../../components/notFoundMsg";
 
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
+import { User } from "../../components/user";
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -101,6 +102,7 @@ export const Habits = () => {
       )}
 
       <Container>
+        <User/>
         <CreateHabit>
           <button onClick={openNewHabit}>
             Crie seu hábito:

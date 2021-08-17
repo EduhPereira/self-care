@@ -2,7 +2,8 @@ import { LandingPage } from "../pages/landing-page";
 import { Switch, Route } from "react-router";
 import { Login } from "../pages/login";
 import { Signup } from "../pages/signup";
-import { Habits } from '../pages/habits'
+import { Habits } from "../pages/habits";
+
 export const Routes = () => (
   <Switch>
     <Route exact path="/">
@@ -22,7 +23,7 @@ export const Routes = () => (
     </Route>
 
     <Route exact path="/habits">
-      <Habits/>
+      <Habits />
     </Route>
   </Switch>
 );

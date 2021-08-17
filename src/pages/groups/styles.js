@@ -6,7 +6,14 @@ export const Container = styled.main`
 
     section {
         margin-bottom: 24px;
-
+        ${({ showModal }) => showModal ? `
+            -webkit-filter: blur(1px);
+            -moz-filter: blur(1px);
+            -o-filter: blur(1px);
+            -ms-filter: blur(1px);
+            filter: blur(1px);
+        `: ""}
+        
         div {
             margin-top: 11px;
             font-size: 14px;
@@ -52,7 +59,7 @@ export const ModalDiv = styled.div`
 
 export const ContainerForm = styled.div`
     width: 300px;
-    height: 90%;
+    height: 514px;
     background-color: #fff;
     color: #000;
     border-radius: 20px;
@@ -60,15 +67,27 @@ export const ContainerForm = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+
+    @media(min-width: 768px) {
+        width: 571px;
+        height: 682px;
+    }
 `;
 
 export const Form = styled.form`    
     display: flex;
     flex-direction: column;
     padding: 10px 36px;
+    
+
+    @media(min-width: 768px) {
+        width: 100%;
+        padding: 66px 107px;
+    }
 
     input {
-        width: 240px;
+        width: 100%;
         margin: 10px 0;
         height: 42px;
         border-radius: 10px;
@@ -77,6 +96,7 @@ export const Form = styled.form`
     }
 
     select {
+        width: 100%;
         margin: 10px 0;
         height: 42px;
         border-radius: 10px;

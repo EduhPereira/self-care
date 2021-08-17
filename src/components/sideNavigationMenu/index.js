@@ -1,7 +1,9 @@
 import './style.css';
 
 import { Background, Marker } from './styles';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
@@ -9,26 +11,36 @@ import GroupIcon from '@material-ui/icons/Group';
 
 export const SideNavigationMenu = () => {
 
-    const [homeFocus, setHomeFocus] = useState(true);
-    const [listFocus, setListFocus] = useState(false);
-    const [groupFocus, setGroupFocus] = useState(false);
+    const {homeFocus, listFocus, groupFocus, chatFocus, 
+        setHomeFocus, setListFocus, setGroupFocus, setChatFocus} = useContext(MenuItemFocusContext);
+
+    const history = useHistory();
 
     const handleHomeClick = () => {
         setHomeFocus(true);
         setListFocus(false);
         setGroupFocus(false);
+        setChatFocus(false);
+        localStorage.setItem('focus', 'home');
+        history.push('/dashboard');
     }
-
+    
     const handleListClick = () => {
         setHomeFocus(false);
         setListFocus(true);
         setGroupFocus(false);
+        setChatFocus(false);
+        localStorage.setItem('focus', 'list');
+        history.push('/habits');
     }
-
+    
     const handleGroupClick = () => {
         setHomeFocus(false);
         setListFocus(false);
         setGroupFocus(true);
+        setChatFocus(false);
+        localStorage.setItem('focus', 'group');
+        history.push('/groups');
     }
 
     return (

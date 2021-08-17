@@ -6,6 +6,8 @@ import { FaCheck, FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ModalHabits } from "../../components/modalHabits";
 import { CircularProgress } from "@material-ui/core";
+import { SideNavigationMenu } from '../../components/sideNavigationMenu';
+import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -16,6 +18,11 @@ export const Habits = () => {
   const [titleModal, setTitleModal] = useState("");
   const [loading, setLoading] = useState(true);
   const [control, setControl] = useState('Todas')
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const updateMedia = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
 
   const habits = async () => {
     const response = await api.get("/habits/personal/", {
@@ -26,6 +33,11 @@ export const Habits = () => {
     setLoading(false);
     setHabitsList(response.data)
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
 
   useEffect(() => {
     habits()
@@ -85,90 +97,97 @@ export const Habits = () => {
   console.log(habitListFilter);
 
   return (
-    <Container>
-      <button onClick={openNewHabit}>Crie seu hábito:</button>
-      <ModalHabits
-        habitsF={habits}
-        setVisible={setVisible}
-        visible={visible}
-        habit={habitEdit}
-        titleModal={titleModal}
-      />
-      <ContentCategory>
-        <h3>Categorias</h3>
-
-        <select onChange={selectCategory}>
-          <option selected value="Todas">
-            Todas
-          </option>
-          <option value="Saúde">Saúde</option>
-          <option value="Música">Música</option>
-          <option value="Aventura">Aventura</option>
-          <option value="Estudos">Estudos</option>
-          <option value="Religão">Religão</option>
-          <option value="Esporte">Esporte</option>
-        </select>
-      </ContentCategory>
-
-      {loading ? (
-        <CircularProgress />
+    <>
+      {isMobile ? (
+        <BottomNavigationMenu/>
       ) : (
-        <Cards>
-          {control === 'Todas' ? (
-            <>
-              {habitsList.map((el) => {
-                return (
-                  <Card>
-                    <p className="Title">{el.title}</p>
-                    <p>Dificuldade: {el.difficulty}</p>
-                    <p>Categoria: {el.category}</p>
-                    <Icons>
-                      <RiDeleteBin2Line
-                        className="Delete"
-                        onClick={() => deleteHabit(el.id)}
-                      />
-                      <FaEdit
-                        className="Edit"
-                        onClick={() => openUpdateHabit(el)}
-                      />
-                      <FaCheck
-                        className="Check"
-                        onClick={() => checkHabit(el.how_much_achieved, el.id)}
-                      />
-                    </Icons>
-                  </Card>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {habitListFilter.map((el) => {
-                return (
-                  <Card>
-                    <p className="Title">{el.title}</p>
-                    <p>Dificuldade: {el.difficulty}</p>
-                    <p>Categoria: {el.category}</p>
-                    <Icons>
-                      <RiDeleteBin2Line
-                        className="Delete"
-                        onClick={() => deleteHabit(el.id)}
-                      />
-                      <FaEdit
-                        className="Edit"
-                        onClick={() => openUpdateHabit(el)}
-                      />
-                      <FaCheck
-                        className="Check"
-                        onClick={() => checkHabit(el.how_much_achieved, el.id)}
-                      />
-                    </Icons>
-                  </Card>
-                );
-              })}
-            </>
-          )}
-        </Cards>
+        <SideNavigationMenu/>
       )}
-    </Container>
+      <Container>
+        <button onClick={openNewHabit}>Crie seu hábito:</button>
+        <ModalHabits
+          habitsF={habits}
+          setVisible={setVisible}
+          visible={visible}
+          habit={habitEdit}
+          titleModal={titleModal}
+        />
+        <ContentCategory>
+          <h3>Categorias</h3>
+
+          <select onChange={selectCategory}>
+            <option selected value="Todas">
+              Todas
+            </option>
+            <option value="Saúde">Saúde</option>
+            <option value="Música">Música</option>
+            <option value="Aventura">Aventura</option>
+            <option value="Estudos">Estudos</option>
+            <option value="Religão">Religão</option>
+            <option value="Esporte">Esporte</option>
+          </select>
+        </ContentCategory>
+
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Cards>
+            {control === 'Todas' ? (
+              <>
+                {habitsList.map((el) => {
+                  return (
+                    <Card>
+                      <p className="Title">{el.title}</p>
+                      <p>Dificuldade: {el.difficulty}</p>
+                      <p>Categoria: {el.category}</p>
+                      <Icons>
+                        <RiDeleteBin2Line
+                          className="Delete"
+                          onClick={() => deleteHabit(el.id)}
+                        />
+                        <FaEdit
+                          className="Edit"
+                          onClick={() => openUpdateHabit(el)}
+                        />
+                        <FaCheck
+                          className="Check"
+                          onClick={() => checkHabit(el.how_much_achieved, el.id)}
+                        />
+                      </Icons>
+                    </Card>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                {habitListFilter.map((el) => {
+                  return (
+                    <Card>
+                      <p className="Title">{el.title}</p>
+                      <p>Dificuldade: {el.difficulty}</p>
+                      <p>Categoria: {el.category}</p>
+                      <Icons>
+                        <RiDeleteBin2Line
+                          className="Delete"
+                          onClick={() => deleteHabit(el.id)}
+                        />
+                        <FaEdit
+                          className="Edit"
+                          onClick={() => openUpdateHabit(el)}
+                        />
+                        <FaCheck
+                          className="Check"
+                          onClick={() => checkHabit(el.how_much_achieved, el.id)}
+                        />
+                      </Icons>
+                    </Card>
+                  );
+                })}
+              </>
+            )}
+          </Cards>
+        )}
+      </Container>
+    </>
   );
 };

@@ -13,15 +13,16 @@ import {
 import HealthyHabit from "../../assets/images/healthy-habit.svg";
 import Habits from "../../assets/images/habits.svg";
 export const LandingPage = () => {
-  //useHistory ainda não setado aos botões no evento de onClick para redirecionamento a outra pagina
   const history = useHistory();
   return (
     <div>
       <Header>
         <Logo>SelfCare</Logo>
         <Buttons>
-          <SigninBtn>Entrar</SigninBtn>
-          <SignupBtn>Cadastrar</SignupBtn>
+          <SigninBtn onClick={() => history.push("/login")}>Entrar</SigninBtn>
+          <SignupBtn onClick={() => history.push("/signup")}>
+            Cadastrar
+          </SignupBtn>
         </Buttons>
       </Header>
       <AboutSection>

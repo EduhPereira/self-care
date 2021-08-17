@@ -34,12 +34,21 @@ export const SigninBtn = styled(Button)`
   border: 2px solid #387b52;
   color: #387b52;
   background-color: transparent;
+  transition: all 0.3s ease;
+  :hover {
+    border-color: #93b32b;
+    color: #93b32b;
+  }
 `;
 
 export const SignupBtn = styled(Button)`
   background-color: #387b52;
   color: #fff;
   border: none;
+  transition: all 0.3s ease;
+  :hover {
+    background-color: #93b32b;
+  }
 `;
 
 export const Container = styled.section`
@@ -106,6 +115,7 @@ export const AboutSection = styled(Container)`
     text-transform: capitalize;
     color: #fff;
     border: none;
+    border-radius: 50px;
     box-shadow: 11px 10px 12px 0px rgba(44, 43, 43, 0.75);
     -webkit-box-shadow: 11px 10px 12px 0px rgba(44, 43, 43, 0.75);
     -moz-box-shadow: 11px 10px 12px 0px rgba(44, 43, 43, 0.75);

@@ -11,7 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import GroupIcon from '@material-ui/icons/Group';
 import ChatIcon from '@material-ui/icons/Chat';
 
-export const BottomNavigationMenu = () => {
+export const BottomNavigationMenu = ({openHabit}) => {
 
     const {homeFocus, listFocus, groupFocus, chatFocus, 
         setHomeFocus, setListFocus, setGroupFocus, setChatFocus} = useContext(MenuItemFocusContext);
@@ -53,6 +53,10 @@ export const BottomNavigationMenu = () => {
         localStorage.setItem('focus', 'chat');
     }
 
+    const addHabit = () => {
+        openHabit()
+    }
+
     return (
         <Background>
             <IconButton onClick={handleHomeClick}>
@@ -64,7 +68,7 @@ export const BottomNavigationMenu = () => {
                 <ListIcon className={listFocus ? 'focused' : 'default'} style={{fontSize: 30}}/>
             </IconButton>
             <FloatingIconButton>
-                <AddIcon style={{color: 'white', fontSize: 40}}/>
+                <AddIcon onClick={addHabit} style={{color: 'white', fontSize: 40}}/>
             </FloatingIconButton>
             <IconButton onClick={handleGroupClick}>
                 <Marker className={groupFocus ? 'active' : 'hidden'}/>

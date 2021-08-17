@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
-import { Container, ContentCategory, Cards, Card, Icons, CreateHabit } from "./styles";
+import {
+  Container,
+  ContentCategory,
+  Cards,
+  Card,
+  Icons,
+  CreateHabit,
+} from "./styles";
 import { FaCheck, FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ModalHabits } from "../../components/modalHabits";
@@ -102,12 +109,8 @@ export const Habits = () => {
       )}
 
       <Container>
-        <User/>
-        <CreateHabit>
-          <button onClick={openNewHabit}>
-            Crie seu hábito:
-          </button>
-        </CreateHabit>
+        <User />
+
         <ModalHabits
           habitsF={habits}
           setVisible={setVisible}
@@ -130,6 +133,10 @@ export const Habits = () => {
             <option value="Esporte">Esporte</option>
           </select>
         </ContentCategory>
+
+        <CreateHabit>
+          <button onClick={openNewHabit}>Crie seu hábito:</button>
+        </CreateHabit>
 
         {loading ? (
           <CircularProgress />

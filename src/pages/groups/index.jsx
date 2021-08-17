@@ -59,7 +59,7 @@ export const Groups = () => {
     }, [])
 
     return (
-        <Container>
+        <Container showModal={showModal}>
             <ModalDiv showModal={showModal}>
                 <ContainerForm>
                     <h2>Criar Grupo</h2>

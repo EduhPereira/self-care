@@ -6,6 +6,7 @@ import { FaCheck, FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ModalHabits } from "../../components/modalHabits";
 import { CircularProgress } from "@material-ui/core";
+import { NotFoundMsg } from "../../components/notFoundMsg";
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -15,7 +16,7 @@ export const Habits = () => {
   const [visible, setVisible] = useState(false);
   const [titleModal, setTitleModal] = useState("");
   const [loading, setLoading] = useState(true);
-  const [control, setControl] = useState('Todas')
+  const [control, setControl] = useState("Todas");
 
   const habits = async () => {
     const response = await api.get("/habits/personal/", {
@@ -24,11 +25,11 @@ export const Habits = () => {
       },
     });
     setLoading(false);
-    setHabitsList(response.data)
+    setHabitsList(response.data);
   };
 
   useEffect(() => {
-    habits()
+    habits();
   }, []);
 
   const deleteHabit = async (id) => {
@@ -67,20 +68,17 @@ export const Habits = () => {
   };
 
   const selectCategory = (event) => {
-    setControl(event.target.value)
+    setControl(event.target.value);
     let filterList = habitsList.filter((el) => {
       if (el.category.includes(event.target.value)) {
         return el;
       }
     });
 
-      sethabitListFilter(filterList);
-
-
+    sethabitListFilter(filterList);
   };
 
-  console.log(control)
-  
+  console.log(control);
 
   console.log(habitListFilter);
 
@@ -114,7 +112,7 @@ export const Habits = () => {
         <CircularProgress />
       ) : (
         <Cards>
-          {control === 'Todas' ? (
+          {control === "Todas" ? (
             <>
               {habitsList.map((el) => {
                 return (
@@ -142,29 +140,37 @@ export const Habits = () => {
             </>
           ) : (
             <>
-              {habitListFilter.map((el) => {
-                return (
-                  <Card>
-                    <p className="Title">{el.title}</p>
-                    <p>Dificuldade: {el.difficulty}</p>
-                    <p>Categoria: {el.category}</p>
-                    <Icons>
-                      <RiDeleteBin2Line
-                        className="Delete"
-                        onClick={() => deleteHabit(el.id)}
-                      />
-                      <FaEdit
-                        className="Edit"
-                        onClick={() => openUpdateHabit(el)}
-                      />
-                      <FaCheck
-                        className="Check"
-                        onClick={() => checkHabit(el.how_much_achieved, el.id)}
-                      />
-                    </Icons>
-                  </Card>
-                );
-              })}
+              {habitListFilter.length === 0 ? (
+                <NotFoundMsg>Não existe hábitos nesta categoria</NotFoundMsg>
+              ) : (
+                <>
+                  {habitListFilter.map((el) => {
+                    return (
+                      <Card>
+                        <p className="Title">{el.title}</p>
+                        <p>Dificuldade: {el.difficulty}</p>
+                        <p>Categoria: {el.category}</p>
+                        <Icons>
+                          <RiDeleteBin2Line
+                            className="Delete"
+                            onClick={() => deleteHabit(el.id)}
+                          />
+                          <FaEdit
+                            className="Edit"
+                            onClick={() => openUpdateHabit(el)}
+                          />
+                          <FaCheck
+                            className="Check"
+                            onClick={() =>
+                              checkHabit(el.how_much_achieved, el.id)
+                            }
+                          />
+                        </Icons>
+                      </Card>
+                    );
+                  })}
+                </>
+              )}
             </>
           )}
         </Cards>

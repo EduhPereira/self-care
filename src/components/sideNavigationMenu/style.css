@@ -1,0 +1,21 @@
+.menuItem:hover {
+    cursor: pointer;
+}
+
+.hiddenMenuItem {
+    width: 0px;
+    left: 138px;
+}
+
+.focusedMenuItem {
+    width: 85px;
+    left: 124px;
+}
+
+.whiteMarker {
+    color: white;
+}
+
+.grayMarker {
+    color: #B9B9B9;
+}

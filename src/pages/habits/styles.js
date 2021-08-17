@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: 'Poppins', sans-serif;
+  padding-bottom: 150px;
 
   .MuiCircularProgress-root{
     margin-top: 150px;
@@ -23,6 +24,7 @@ export const ContentCategory = styled.div`
   display: flex;
   align-items: center;
   margin-top: 30px;
+  
 
   h3 {
     margin-right: 10px;
@@ -102,5 +104,11 @@ export const Icons = styled.div`
   .Check{
     color: #285BD3;
   }
+
+`
+
+
+export const CreateHabit = styled.div`
+  display: none;
 
 `

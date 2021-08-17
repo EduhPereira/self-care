@@ -1,7 +1,9 @@
 import './style.css';
 
 import { Background, IconButton, FloatingIconButton, Marker } from './styles';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
@@ -9,18 +11,20 @@ import AddIcon from '@material-ui/icons/Add';
 import GroupIcon from '@material-ui/icons/Group';
 import ChatIcon from '@material-ui/icons/Chat';
 
-export const BottomNavigationMenu = () => {
+export const BottomNavigationMenu = ({openHabit}) => {
 
-    const [homeFocus, setHomeFocus] = useState(true);
-    const [listFocus, setListFocus] = useState(false);
-    const [groupFocus, setGroupFocus] = useState(false);
-    const [chatFocus, setChatFocus] = useState(false);
+    const {homeFocus, listFocus, groupFocus, chatFocus, 
+        setHomeFocus, setListFocus, setGroupFocus, setChatFocus} = useContext(MenuItemFocusContext);
+
+    const history = useHistory();
 
     const handleHomeClick = () => {
         setHomeFocus(true);
         setListFocus(false);
         setGroupFocus(false);
         setChatFocus(false);
+        localStorage.setItem('focus', 'home');
+        history.push('/dashboard');
     }
 
     const handleListClick = () => {
@@ -28,6 +32,8 @@ export const BottomNavigationMenu = () => {
         setListFocus(true);
         setGroupFocus(false);
         setChatFocus(false);
+        localStorage.setItem('focus', 'list');
+        history.push('/habits');
     }
 
     const handleGroupClick = () => {
@@ -35,6 +41,8 @@ export const BottomNavigationMenu = () => {
         setListFocus(false);
         setGroupFocus(true);
         setChatFocus(false);
+        localStorage.setItem('focus', 'group');
+        history.push('/groups');
     }
 
     const handleChatClick = () => {
@@ -42,6 +50,11 @@ export const BottomNavigationMenu = () => {
         setListFocus(false);
         setGroupFocus(false);
         setChatFocus(true);
+        localStorage.setItem('focus', 'chat');
+    }
+
+    const addHabit = () => {
+        openHabit()
     }
 
     return (
@@ -55,7 +68,7 @@ export const BottomNavigationMenu = () => {
                 <ListIcon className={listFocus ? 'focused' : 'default'} style={{fontSize: 30}}/>
             </IconButton>
             <FloatingIconButton>
-                <AddIcon style={{color: 'white', fontSize: 40}}/>
+                <AddIcon onClick={addHabit} style={{color: 'white', fontSize: 40}}/>
             </FloatingIconButton>
             <IconButton onClick={handleGroupClick}>
                 <Marker className={groupFocus ? 'active' : 'hidden'}/>

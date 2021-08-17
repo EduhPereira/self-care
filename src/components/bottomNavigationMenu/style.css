@@ -1,0 +1,15 @@
+.active {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.focused {
+    color: #097A52;
+}
+
+.default {
+    color: #7BED81;
+}

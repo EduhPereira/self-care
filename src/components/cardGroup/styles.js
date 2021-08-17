@@ -9,6 +9,15 @@ export const Container = styled.div`
     padding: 5px;
     text-align: end;
 
+    @media(min-width:768px) {
+        width: 577px;
+        min-height: 136px;
+        background-color: #caf8d5;
+        box-shadow: 10px 10px 0px #097a52;
+        border-radius: 14px;
+        margin: 65px auto;
+    }
+
     div {
         cursor: pointer;
     }

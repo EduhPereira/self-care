@@ -4,6 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { api } from "../../services/api";
 import { useHistory } from "react-router-dom";
 import { Container } from "./style";
+import { Background } from "../login/styles";
+import loginImg from "../../assets/signup.png"
+import logo from "../../assets/self-care.png"
 // import { toast } from "react-toastify";
 
 export const Signup = () => {
@@ -47,37 +50,42 @@ export const Signup = () => {
 
   return (
     <Container>
-      <header>
-        <h1>Self Care</h1>
-        <p>Crie sua Conta</p>
-      </header>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="username">
-          Nome <span>{errors.username && errors.username.message}</span>
-        </label>
-        <input type="text" {...register("username")} />
+      <Background>
+        <img src={loginImg} />
+      </Background>
+      <div className="signup">
+        <header>
+          <img src={logo} />
+          <p>Crie sua Conta</p>
+        </header>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="username">
+            Nome: <span>{errors.username && errors.username.message}</span>
+          </label>
+          <input type="text" {...register("username")} />
 
-        <label htmlFor="email">
-          Email <span>{errors.email?.message}</span>
-        </label>
-        <input type="text" {...register("email")} />
+          <label htmlFor="email">
+            Email: <span>{errors.email?.message}</span>
+          </label>
+          <input type="text" {...register("email")} />
 
-        <label htmlFor="password">
-          Senha <span>{errors.password?.message}</span>
-        </label>
-        <input type="text" {...register("password")} />
+          <label htmlFor="password">
+            Senha: <span>{errors.password?.message}</span>
+          </label>
+          <input type="text" {...register("password")} />
 
-        <label htmlFor="passwordConfirm">
-          Confirmar Senha <span>{errors.passwordConfirm?.message}</span>
-        </label>
-        <input type="text" {...register("passwordConfirm")} />
+          <label htmlFor="passwordConfirm">
+            Confirmar Senha: <span>{errors.passwordConfirm?.message}</span>
+          </label>
+          <input type="text" {...register("passwordConfirm")} />
 
-        <button type="submit">Enviar</button>
-        <p>
-          Já tem uma conta?{" "}
-          <span onClick={() => history.push("/login")}>Entre</span>
-        </p>
-      </form>
+          <button type="submit">Enviar</button>
+          <p>
+            Já tem uma conta?{" "}
+            <span onClick={() => history.push("/login")}>Entre</span>
+          </p>
+        </form>
+      </div>
     </Container>
   );
 };

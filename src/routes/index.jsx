@@ -3,6 +3,8 @@ import { Switch, Route } from "react-router";
 import { Login } from "../pages/login";
 import { Signup } from "../pages/signup";
 import { Habits } from '../pages/habits'
+import { Groups } from '../pages/groups';
+import { Dashboard } from '../pages/dashboard';
 export const Routes = () => (
   <Switch>
     <Route exact path="/">
@@ -18,11 +20,15 @@ export const Routes = () => (
     </Route>
 
     <Route exact path="/dashboard">
-      <p>Dashboard</p>
+      <Dashboard />
     </Route>
 
     <Route exact path="/habits">
       <Habits/>
+    </Route>
+
+    <Route exact path="/groups">
+      <Groups/>
     </Route>
   </Switch>
 );

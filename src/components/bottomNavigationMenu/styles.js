@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const Background = styled.div`
     display: flex;
     justify-content: space-evenly;
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    background-color: white;
     height: 60px;
     width: calc(100vw - 40px);
     margin: 30px 20px;

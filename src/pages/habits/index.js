@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
+import { toast } from "react-toastify";
 import {
   Container,
   ContentCategory,
@@ -60,8 +61,8 @@ export const Habits = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    habits();
+    await habits();
+    toast.warning("Hábito excluído");
   };
 
   const checkHabit = async (value, id) => {
@@ -75,7 +76,7 @@ export const Habits = () => {
       }
     );
 
-    habits();
+    toast.info("Hábito feito");
   };
 
   const openUpdateHabit = (habit) => {
@@ -144,38 +145,55 @@ export const Habits = () => {
           <Cards>
             {control === "Todas" ? (
               <>
-                {habitsList.map((el) => {
-                  return (
-                    <Card>
-                      <p className="Title">
-                        <span>Hábito: </span>
-                        {el.title}
-                      </p>
-                      <p className="Difficulty">
-                        <span>Dificuldade:</span> {el.difficulty}
-                      </p>
-                      <p className="Category">
-                        <span>Categoria:</span> {el.category}
-                      </p>
-                      <Icons>
-                        <RiDeleteBin2Line
-                          className="Delete"
-                          onClick={() => deleteHabit(el.id)}
-                        />
-                        <FaEdit
-                          className="Edit"
-                          onClick={() => openUpdateHabit(el)}
-                        />
-                        <FaCheck
-                          className="Check"
-                          onClick={() =>
-                            checkHabit(el.how_much_achieved, el.id)
-                          }
-                        />
-                      </Icons>
-                    </Card>
-                  );
-                })}
+                {habitsList.length === 0 ? (
+                  <NotFoundMsg>Você não criou nenhum hábito</NotFoundMsg>
+                ) : (
+                  <>
+                    {habitsList.map((el) => {
+                      return (
+                        <Card>
+                          <p className="Title">
+                            <p className="Habit">Hábito: </p>
+                            <p>{el.title}</p>
+                          </p>
+                          <p className="Difficulty">
+                            <span>Dificuldade:</span> {el.difficulty}
+                          </p>
+                          <p className="Category">
+                            <span>Categoria:</span> {el.category}
+                          </p>
+                          <p className="Achievements">
+                            <span>Dias conquistados: </span>
+                            {el.how_much_achieved}
+                          </p>
+
+                          <p className="Frequency">
+                            <span>Frequencia: </span>
+                            {el.frequency}
+                          </p>
+                          <Icons>
+                            <div onClick={() => deleteHabit(el.id)}>
+                              <RiDeleteBin2Line className="Delete" />
+                              <span>Excluir</span>
+                            </div>
+                            <div onClick={() => openUpdateHabit(el)}>
+                              <FaEdit className="Edit" />
+                              <span>Editar</span>
+                            </div>
+                            <div
+                              onClick={() =>
+                                checkHabit(el.how_much_achieved, el.id)
+                              }
+                            >
+                              <FaCheck className="Check" />
+                              <span>Concluir</span>
+                            </div>
+                          </Icons>
+                        </Card>
+                      );
+                    })}
+                  </>
+                )}
               </>
             ) : (
               <>
@@ -187,8 +205,8 @@ export const Habits = () => {
                       return (
                         <Card>
                           <p className="Title">
-                            <span>Hábito: </span>
-                            {el.title}
+                            <p className="Habit">Hábito: </p>
+                            <p>{el.title}</p>
                           </p>
                           <p className="Difficulty">
                             <span>Dificuldade:</span> {el.difficulty}
@@ -196,21 +214,33 @@ export const Habits = () => {
                           <p className="Category">
                             <span>Categoria:</span> {el.category}
                           </p>
+                          <p className="Achievements">
+                            <span>Dias conquistados: </span>
+                            {el.how_much_achieved}
+                          </p>
+
+                          <p className="Frequency">
+                            <span>Frequencia: </span>
+                            {el.frequency}
+                          </p>
+
                           <Icons>
-                            <RiDeleteBin2Line
-                              className="Delete"
-                              onClick={() => deleteHabit(el.id)}
-                            />
-                            <FaEdit
-                              className="Edit"
-                              onClick={() => openUpdateHabit(el)}
-                            />
-                            <FaCheck
-                              className="Check"
+                            <div onClick={() => deleteHabit(el.id)}>
+                              <RiDeleteBin2Line className="Delete" />
+                              <span>Excluir</span>
+                            </div>
+                            <div onClick={() => openUpdateHabit(el)}>
+                              <FaEdit className="Edit" />
+                              <span>Editar</span>
+                            </div>
+                            <div
                               onClick={() =>
                                 checkHabit(el.how_much_achieved, el.id)
                               }
-                            />
+                            >
+                              <FaCheck className="Check" />
+                              <span>Concluir</span>
+                            </div>
                           </Icons>
                         </Card>
                       );

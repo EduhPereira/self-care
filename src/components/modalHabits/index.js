@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
 
 export const ModalHabits = ({
   habitsF,
@@ -42,9 +43,10 @@ export const ModalHabits = ({
         Authorization: `Bearer ${token}`,
       },
     });
-    e.target.reset()
     habitsF();
     setVisible(false);
+    toast.success('Sucesso ao editar hábito!')
+    e.target.reset()
   };
 
   const createHabit = async ({ title, category, difficulty, frequency }, e) => {
@@ -65,9 +67,10 @@ export const ModalHabits = ({
         },
       }
     );
-    e.target.reset()
     habitsF();
     setVisible(false);
+    toast.success('Sucesso ao criar o hábito!')
+    e.target.reset()
   };
 
   return (
@@ -81,7 +84,7 @@ export const ModalHabits = ({
       >
         <h2>{titleModal}</h2>
         <label>Título:</label>
-        <input type="text" {...register("title")} />
+        <input type="text" {...register("title")} maxLength="25"/>
         <label>Categoria:</label>
         <select name="category" {...register("category")}>
           <option value="">--Escolha uma categoria--</option>
@@ -100,7 +103,7 @@ export const ModalHabits = ({
           <option value="Difícil">Difícil</option>
         </select>
         <label>Frequência:</label>
-        <input type="text" {...register("frequency")} />
+        <input type="text" {...register("frequency")} maxLength="25"/>
         <Buttons>
           {titleModal === "Edite seu hábito:" ? (
             <button className="update" type="submit">

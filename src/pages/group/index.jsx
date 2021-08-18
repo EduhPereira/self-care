@@ -5,6 +5,7 @@ import { api } from "../../services/api";
 import { Button, Container } from "../groups/styles";
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
+import { GroupGoals } from "../../components/groupsGoals";
 
 export const Group = () => {
   const params = useParams();
@@ -12,12 +13,7 @@ export const Group = () => {
   const [activitiesList, setActivitiesList] = useState([]);
   const [showList, setShowList] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const getGoals = () => {
-    api
-      .get(`/goals/?group=${params.id}`)
-      .then((res) => setGoalsList(res.data.results))
-      .catch((err) => console.log(err));
-  };
+
   const updateMedia = () => {
     setIsMobile(window.innerWidth < 768);
   };
@@ -30,7 +26,6 @@ export const Group = () => {
   };
 
   useEffect(() => {
-    getGoals();
     getActivities();
   }, []);
 
@@ -48,13 +43,7 @@ export const Group = () => {
       </section>
       <section>
         {showList ? (
-          goalsList.map((goal) => (
-            // componente goal = tag ul
-            <ul>
-              <li>ID: {goal.id}</li>
-              <li>Nome: {goal.title}</li>
-            </ul>
-          ))
+          <GroupGoals GroupId={params.id} />
         ) : (
           <GroupActivities groupId={params.id} />
         )}

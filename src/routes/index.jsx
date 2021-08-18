@@ -4,6 +4,7 @@ import { Login } from "../pages/login";
 import { Signup } from "../pages/signup";
 import { Habits } from "../pages/habits";
 import { Groups } from "../pages/groups";
+import { Group } from "../pages/group";
 import { Dashboard } from "../pages/dashboard";
 export const Routes = () => (
   <Switch>
@@ -30,20 +31,9 @@ export const Routes = () => (
     <Route exact path="/groups">
       <Groups />
     </Route>
+
+    <Route exact path="/groups/:id">
+      <Group />
+    </Route>
   </Switch>
 );
-
-// Rotas para colocar na Dashboard
-// import { Group } from "../pages/group";
-// import { Groups } from "../pages/groups";
-
-// export const Routes = () => (
-//   <Switch>
-//     <Route exact path="/groups">
-//       <Groups />
-//     </Route>
-//     <Route exact path="/groups/:id">
-//       <Group />
-//     </Route>
-//   </Switch>
-// )

@@ -5,7 +5,7 @@ import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup"
 import { useUser } from "../../providers/UserProvider"
 
 
-export const CardGroup = ({ group, getGroups, registered }) => {
+export const CardGroup = ({ group, getGroups, getSubscriptions, registered }) => {
 
     const { setCurrentGroup } = UseCurrentGroup()
     const history = useHistory()
@@ -23,6 +23,7 @@ export const CardGroup = ({ group, getGroups, registered }) => {
             }
         }).then(res => {
             getGroups()
+            getSubscriptions()
             console.log(res, 'teste')
         }).catch(err => console.log(err))
     }

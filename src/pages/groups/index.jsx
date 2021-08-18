@@ -1,4 +1,4 @@
-import { Container, Button, ModalDiv, ContainerForm, ContainerButtons, ButtonUpdate, ButtonCancel, Form } from "./styles"
+import { Container, Button, ModalDiv, ContainerButtons, Form } from "./styles"
 import { useEffect, useState } from "react"
 import { api } from "../../services/api"
 import { CardGroup } from "../../components/cardGroup"
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SideNavigationMenu } from '../../components/sideNavigationMenu';
 import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
+import { NotFoundMsg } from "../../components/notFoundMsg"
 
 export const Groups = () => {
 
@@ -16,7 +17,7 @@ export const Groups = () => {
     const [showList, setShowList] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const { id, token } = useUser()
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
     const updateMedia = () => {
         setIsMobile(window.innerWidth < 768);
@@ -37,7 +38,21 @@ export const Groups = () => {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        }).then(res => console.log(res, "foi!")).catch(err => console.log(err))
+        }).then(res => {
+            console.log("grupo criado!", res)
+            return res
+        }).then(res => {
+            api.post(`/groups/${res.data.id}/subscribe/`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }).then(res => {
+                console.log('incrição', res)
+            }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
+
+        getGroups()
+        getSubscriptions()
     }
 
     const getGroups = () => {
@@ -79,31 +94,29 @@ export const Groups = () => {
             )}
             <Container>
                 <ModalDiv showModal={showModal}>
-                    <ContainerForm>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2>Criar Grupo</h2>
-                        <Form onSubmit={handleSubmit(onSubmit)}>
-                            <label htmlFor="name">Nome: <span>{errors.name?.message}</span></label>
-                            <input type="text" {...register("name")} />
+                        <label htmlFor="name">Nome: <span>{errors.name?.message}</span></label>
+                        <input type="text" {...register("name")} />
 
-                            <label htmlFor="description">Descrição: <span>{errors.description?.message}</span></label>
-                            <input type="text" {...register("description")} />
+                        <label htmlFor="description">Descrição: <span>{errors.description?.message}</span></label>
+                        <input type="text" {...register("description")} />
 
-                            <label htmlFor="category">Categoria: <span>{errors.category?.message}</span></label>
-                            <select name="category" {...register("category")}>
-                                <option value="">--Escolha uma categoria--</option>
-                                <option value="Saúde">Saúde</option>
-                                <option value="Música">Música</option>
-                                <option value="Aventura">Aventura</option>
-                                <option value="Estudos">Estudos</option>
-                                <option value="Religão">Religão</option>
-                                <option value="Esporte">Esporte</option>
-                            </select>
-                            <ContainerButtons>
-                                <ButtonCancel type="button" onClick={() => setShowModal(false)}> Cancelar</ButtonCancel>
-                                <ButtonUpdate type="submit" onClick={() => setShowModal(false)}>Criar</ButtonUpdate>
-                            </ContainerButtons>
-                        </Form>
-                    </ContainerForm>
+                        <label htmlFor="category">Categoria: <span>{errors.category?.message}</span></label>
+                        <select name="category" {...register("category")}>
+                            <option value="">--Escolha uma categoria--</option>
+                            <option value="Saúde">Saúde</option>
+                            <option value="Música">Música</option>
+                            <option value="Aventura">Aventura</option>
+                            <option value="Estudos">Estudos</option>
+                            <option value="Religão">Religão</option>
+                            <option value="Esporte">Esporte</option>
+                        </select>
+                        <ContainerButtons>
+                            <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
+                            <button className="update" type="submit" onClick={() => setShowModal(false)}>Criar</button>
+                        </ContainerButtons>
+                    </Form>
                 </ModalDiv>
                 <section>
                     <Button onClick={() => setShowList(true)} showList={showList}>Todos os grupos</Button>
@@ -113,10 +126,15 @@ export const Groups = () => {
                 </section>
                 <section>
                     {(showList ? (groups.map(item => (
-                        !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup key={item.id} group={item} getGroups={getGroups} />
+                        !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
+                            key={item.id}
+                            group={item}
+                            getGroups={getGroups}
+                            getSubscriptions={getSubscriptions}
+                        />
                     ))) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
                         <CardGroup key={item.id} group={item} registered />
-                    )) : (<h1>Você não possui grupos</h1>))
+                    )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                     )}
                 </section>
             </Container>

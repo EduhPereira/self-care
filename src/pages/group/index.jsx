@@ -56,7 +56,7 @@ export const Group = () => {
             </ul>
           ))
         ) : (
-          <GroupActivities />
+          <GroupActivities groupId={params.id} />
         )}
       </section>
     </Container>

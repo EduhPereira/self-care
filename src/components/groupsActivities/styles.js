@@ -41,3 +41,27 @@ export const Container = styled.div`
     cursor: pointer;
   }
 `;
+
+export const Icons = styled.div`
+  text-align: right;
+  margin-right: -2px;
+
+  svg {
+    margin: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+  }
+
+  .Delete {
+    color: #d81c48;
+  }
+
+  .Edit {
+    color: #f7a902;
+  }
+
+  .Check {
+    color: #285bd3;
+  }
+`;

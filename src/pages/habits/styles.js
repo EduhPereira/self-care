@@ -14,6 +14,7 @@ export const Container = styled.div`
   font-family: 'Poppins', sans-serif;
   padding-bottom: 150px;
 
+
   .MuiCircularProgress-root{
     margin-top: 150px;
   }
@@ -58,10 +59,11 @@ export const Cards = styled.div`
   flex-direction: column;
   @media(min-width: 768px){
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     width: 700px;
     margin: auto;
     justify-content: center;
+    align-items: center;
     
   }
 
@@ -69,34 +71,57 @@ export const Cards = styled.div`
 
 export const Card = styled.div`
   margin: 10px 10px;
-  width: 250px;
-  height: 165px;
+  width: 280px;
   box-shadow: 0 0 4px #696969;
   border-radius: 10px;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 
   .Title{
     text-align: center;
-    margin-bottom: 20px;
   }
 
-  .Title span{
+  .Title .Habit{
+    color: #071865;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+
+  .Difficulty span{
     color: #071865;
     font-weight: bold;
   }
 
-  .Difficulty span{
-    color: #770B04;
+  .Category span{
+    color: #071865;
     font-weight: bold;
   }
 
-  .Category span{
-    color: #775C00;
+  .Achievements span{
+    color: #071865;
+    font-weight: bold;
+  }
+
+  .Frequency span{
+    color: #071865;
     font-weight: bold;
   }
 
   p{
-    margin-bottom: 10px;
+    padding: 5px;
+    word-break: break-all;
+
+  }
+
+  @media(min-width: 768px){
+
+    width: 500px;
+    margin: 10px;
+    
   }
 
   
@@ -104,13 +129,25 @@ export const Card = styled.div`
 
 export const Icons = styled.div`
   text-align: right;
-  margin-right: -2px;
+  display: flex;
+  justify-content: center;
+  
+
 
   svg{
-    margin: 5px;
-    width: 25px;
-    height: 25px;
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
+  }
+
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .Delete{
@@ -124,6 +161,12 @@ export const Icons = styled.div`
   .Check{
     color: #285BD3;
   }
+
+  @media(min-width: 768px){
+    justify-content: flex-end;
+  }
+
+  
 
 `
 

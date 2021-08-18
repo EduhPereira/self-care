@@ -8,6 +8,7 @@ import { Group } from "../pages/group";
 import { Dashboard } from "../pages/dashboard";
 export const Routes = () => (
   <Switch>
+
     <Route exact path="/">
       <LandingPage />
     </Route>
@@ -34,6 +35,10 @@ export const Routes = () => (
 
     <Route exact path="/groups/:id">
       <Group />
+    </Route>
+
+    <Route exact path="*">
+      <p>Pagina não existe</p>
     </Route>
   </Switch>
 );

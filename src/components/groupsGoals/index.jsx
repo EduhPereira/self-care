@@ -50,6 +50,17 @@ export const GroupGoals = ({ GroupId }) => {
       .catch();
   };
 
+  const handleDelete = (id) => {
+    api
+      .delete(`/goals/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(toast.warning("Meta Removida"))
+      .catch();
+  };
+
   const handlePrevious = () => {
     if (page > 1) {
       setPage(page - 1);
@@ -97,7 +108,7 @@ export const GroupGoals = ({ GroupId }) => {
             <div>{goal.how_much_achieved}</div>
             <div>
               <button>Editar</button>
-              <button>Deletar</button>
+              <button onClick={() => handleDelete(goal.id)}>Deletar</button>
               <button>Check</button>
             </div>
           </div>

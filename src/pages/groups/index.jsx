@@ -16,7 +16,7 @@ export const Groups = () => {
     const [showList, setShowList] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const { id, token } = useUser()
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
     const updateMedia = () => {
         setIsMobile(window.innerWidth < 768);
@@ -37,7 +37,21 @@ export const Groups = () => {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        }).then(res => console.log(res, "foi!")).catch(err => console.log(err))
+        }).then(res => {
+            console.log("grupo criado!", res)
+            return res
+        }).then(res => {
+            api.post(`/groups/${res.data.id}/subscribe/`, null, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }).then(res => {
+                console.log('incrição', res)
+            }).catch(err => console.log(err))
+        }).catch(err => console.log(err))
+
+        getGroups()
+        getSubscriptions()
     }
 
     const getGroups = () => {

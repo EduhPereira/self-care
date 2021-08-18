@@ -33,7 +33,7 @@ export const LandingPage = () => {
             A SelfCare pode ser a escolha certa para você definir novas metas e
             atividades. Simples e Intuitivo é o nosso lema
           </p>
-          <button>comece agora</button>
+          <button onClick={() => history.push("/signup")}>comece agora</button>
         </div>
       </AboutSection>
       <FeaturesSection>

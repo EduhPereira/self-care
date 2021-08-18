@@ -22,6 +22,7 @@ export const Buttons = styled.div`
 export const Button = styled.button`
   outline: none;
   cursor: pointer;
+  height: 40px;
   width: 100px;
   font-size: 14px;
   font-weight: 700;
@@ -107,8 +108,8 @@ export const AboutSection = styled(Container)`
     outline: none;
     cursor: pointer;
     width: 200px;
-    height: 40px;
-    font-size: 14px;
+    height: 45px;
+    font-size: 18px;
     font-weight: 700;
     margin: 32px 0;
     background-color: #387b52;
@@ -128,18 +129,6 @@ export const AboutSection = styled(Container)`
 
 export const FeaturesSection = styled(Container)`
   background-color: #93b32b;
-  clip-path: polygon(
-    50% 3%,
-    100% 0,
-    100% 35%,
-    100% 100%,
-    74% 95%,
-    48% 99%,
-    24% 94%,
-    0 100%,
-    0% 35%,
-    0 0
-  );
 
   img {
     margin: 50px 0;
@@ -171,7 +160,6 @@ export const CreatorsSection = styled.section`
   align-items: center;
   padding: 70px 20px 30px;
   background-color: black;
-  margin: -50px 0 0 0;
 `;
 
 export const CreatorCard = styled.div`
@@ -181,7 +169,6 @@ export const CreatorCard = styled.div`
   align-items: center;
   margin: 20px 10px;
   font-family: cursive;
-  color: #8a8a8a;
   font-weight: 700;
   font-size: 16px;
   transition: all 0.3s linear;
@@ -190,6 +177,9 @@ export const CreatorCard = styled.div`
     height: 150px;
     border-radius: 100%;
     margin-bottom: 10px;
+  }
+  h3 {
+    color: #8a8a8a;
   }
   :hover {
     transform: scale(1.08);

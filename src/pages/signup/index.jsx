@@ -72,12 +72,12 @@ export const Signup = () => {
           <label htmlFor="password">
             Senha: <span>{errors.password?.message}</span>
           </label>
-          <input type="text" {...register("password")} />
+          <input type="password" {...register("password")} />
 
           <label htmlFor="passwordConfirm">
             Confirmar Senha: <span>{errors.passwordConfirm?.message}</span>
           </label>
-          <input type="text" {...register("passwordConfirm")} />
+          <input type="password" {...register("passwordConfirm")} />
 
           <button type="submit">Enviar</button>
           <p>

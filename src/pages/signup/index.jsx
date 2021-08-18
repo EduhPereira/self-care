@@ -7,7 +7,7 @@ import { Container } from "./style";
 import { Background } from "../login/styles";
 import loginImg from "../../assets/signup.png"
 import logo from "../../assets/self-care.png"
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const Signup = () => {
   // contrução do objeto e verificação
@@ -42,10 +42,10 @@ export const Signup = () => {
     api
       .post("/users/", user)
       .then((res) => {
-        console.log(res);
+        toast.success("Conta criada com sucesso!");
         return history.push("/login");
       })
-      .catch((err) => console.log(err, user));
+      .catch((err) => toast.error("Nome ou e-mail já cadastrado!"));
   };
 
   return (

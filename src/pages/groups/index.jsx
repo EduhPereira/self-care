@@ -111,7 +111,12 @@ export const Groups = () => {
                 </section>
                 <section>
                     {(showList ? (groups.map(item => (
-                        !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup key={item.id} group={item} getGroups={getGroups} />
+                        !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
+                            key={item.id}
+                            group={item}
+                            getGroups={getGroups}
+                            getSubscriptions={getSubscriptions}
+                        />
                     ))) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
                         <CardGroup key={item.id} group={item} registered />
                     )) : (<h1>Você não possui grupos</h1>))

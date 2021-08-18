@@ -12,7 +12,7 @@ import logo from "../../assets/self-care.png"
 export const Signup = () => {
   // contrução do objeto e verificação
   const schema = yup.object().shape({
-    username: yup.string().required("Campo Obrigatório."), // regex nome sem caractere especial e spaço
+    username: yup.string().required("Campo Obrigatório.").trim().matches(/^[\S]+$/, "Nomes compostos não são aceitos."), // regex nome sem caractere especial e spaço
     email: yup.string().email("Email Inválido").required("Campo Obrigatório."),
     password: yup
       .string()

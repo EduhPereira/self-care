@@ -6,6 +6,7 @@ import { Habits } from "../pages/habits";
 import { Groups } from "../pages/groups";
 import { Group } from "../pages/group";
 import { Dashboard } from "../pages/dashboard";
+import { NotFoundPage } from "../components/notFoundPage";
 export const Routes = () => (
   <Switch>
 
@@ -38,7 +39,7 @@ export const Routes = () => (
     </Route>
 
     <Route exact path="*">
-      <p>Pagina não existe</p>
+      <NotFoundPage/>
     </Route>
   </Switch>
 );

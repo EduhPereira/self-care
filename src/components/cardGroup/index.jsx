@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import { api } from "../../services/api"
 import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup"
 import { useUser } from "../../providers/UserProvider"
+import { toast } from "react-toastify"
 
 
 export const CardGroup = ({ group, getGroups, getSubscriptions, registered }) => {
@@ -24,8 +25,8 @@ export const CardGroup = ({ group, getGroups, getSubscriptions, registered }) =>
         }).then(res => {
             getGroups()
             getSubscriptions()
-            console.log(res, 'teste')
-        }).catch(err => console.log(err))
+            toast.success("Inscrição realizada com sucesso!")
+        }).catch(err => toast.error("Erro ao se inscrever!"))
     }
     return (
         <Container>

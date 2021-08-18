@@ -10,6 +10,7 @@ import { SideNavigationMenu } from '../../components/sideNavigationMenu';
 import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
 import { NotFoundMsg } from "../../components/notFoundMsg"
 import { toast } from "react-toastify"
+import { User } from "../../components/user"
 
 export const Groups = () => {
 
@@ -109,6 +110,7 @@ export const Groups = () => {
                 <SideNavigationMenu />
             )}
             <Container>
+                <User />
                 <ModalDiv showModal={showModal}>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2>Criar Grupo</h2>

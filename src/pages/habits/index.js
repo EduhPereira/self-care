@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
-import { Container, ContentCategory, Cards, Card, Icons, CreateHabit } from "./styles";
+import {
+  Container,
+  ContentCategory,
+  Cards,
+  Card,
+  Icons,
+  CreateHabit,
+} from "./styles";
 import { FaCheck, FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ModalHabits } from "../../components/modalHabits";
@@ -10,6 +17,7 @@ import { NotFoundMsg } from "../../components/notFoundMsg";
 
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
+import { User } from "../../components/user";
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -101,11 +109,8 @@ export const Habits = () => {
       )}
 
       <Container>
-        <CreateHabit>
-          <button onClick={openNewHabit}>
-            Crie seu hábito:
-          </button>
-        </CreateHabit>
+        <User />
+
         <ModalHabits
           habitsF={habits}
           setVisible={setVisible}
@@ -128,6 +133,10 @@ export const Habits = () => {
             <option value="Esporte">Esporte</option>
           </select>
         </ContentCategory>
+
+        <CreateHabit>
+          <button onClick={openNewHabit}>Crie seu hábito:</button>
+        </CreateHabit>
 
         {loading ? (
           <CircularProgress />

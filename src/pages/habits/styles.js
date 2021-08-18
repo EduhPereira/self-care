@@ -17,6 +17,9 @@ export const Container = styled.div`
   .MuiCircularProgress-root{
     margin-top: 150px;
   }
+
+
+  
   
 `;
 
@@ -24,6 +27,7 @@ export const ContentCategory = styled.div`
   display: flex;
   align-items: center;
   margin-top: 30px;
+  margin-bottom: 20px;
   
 
   h3 {
@@ -45,12 +49,26 @@ export const ContentCategory = styled.div`
     background: white;
     color: black;
   }
+
+  
 `;
 
-export const Cards = styled.div``;
+export const Cards = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media(min-width: 768px){
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 700px;
+    margin: auto;
+    justify-content: center;
+    
+  }
+
+`;
 
 export const Card = styled.div`
-  margin-top: 40px;
+  margin: 10px 10px;
   width: 250px;
   height: 165px;
   box-shadow: 0 0 4px #696969;
@@ -80,6 +98,8 @@ export const Card = styled.div`
   p{
     margin-bottom: 10px;
   }
+
+  
 `;
 
 export const Icons = styled.div`
@@ -110,5 +130,20 @@ export const Icons = styled.div`
 
 export const CreateHabit = styled.div`
   display: none;
+  button{
+    font-size: 1rem;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    padding: 10px;
+    background: #285BD3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media(min-width: 768px){
+    display: flex;
+    
+  }
 
 `

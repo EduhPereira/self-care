@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SideNavigationMenu } from '../../components/sideNavigationMenu';
 import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
+import { NotFoundMsg } from "../../components/notFoundMsg"
 
 export const Groups = () => {
 
@@ -133,7 +134,7 @@ export const Groups = () => {
                         />
                     ))) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
                         <CardGroup key={item.id} group={item} registered />
-                    )) : (<h1>Você não possui grupos</h1>))
+                    )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                     )}
                 </section>
             </Container>

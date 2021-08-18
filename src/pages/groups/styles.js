@@ -20,10 +20,6 @@ export const Container = styled.main`
         }
     }
 
-    button + button {
-        margin-left: 22px;
-    }
-
     span {
         font-size: 14px;
         color: #285bd3;
@@ -42,66 +38,49 @@ export const Button = styled.button`
     color: ${props => (props.showList ? "#fff" : "#000")};
 `
 export const ModalDiv = styled.div`
-    position: absolute;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    top: 0;
-    left: 0;
-    margin-top: 0;
-    z-index: 10;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: ${props => props.showModal ? "flex" : "none"};
-    justify-content: center;
-    align-items: center;
+    position: fixed;
+    background: rgba(1, 1, 1, 0.7);
     font-family: "Poppins", sans-serif;
-    font-size: 20px;
-`;
-
-export const ContainerForm = styled.div`
-    width: 300px;
-    height: 514px;
-    background-color: #fff;
-    color: #000;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-
-    @media(min-width: 768px) {
-        width: 571px;
-        height: 682px;
-    }
+    transition: 0.2s;
+    visibility: ${(props) => `${props.showModal ? "visible" : "hidden"}`};
+    opacity: ${(props) => `${props.showModal ? "1" : "0"}`};
 `;
 
 export const Form = styled.form`    
+    transition: 0.2s;
+    width: 270px;
+    transform: ${(props) =>
+        `${props.showModal ? "translateY(0%)" : "translateY(50%)"}`};
+    background: white;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
-    padding: 10px 36px;
-    
+    padding: 20px;
+    border-radius: 15px;
 
-    @media(min-width: 768px) {
-        width: 100%;
-        padding: 66px 107px;
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 500;
     }
 
     input {
-        width: 100%;
-        margin: 10px 0;
-        height: 42px;
-        border-radius: 10px;
-        font-size: 20px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #969696;
         outline: none;
     }
 
     select {
-        width: 100%;
-        margin: 10px 0;
-        height: 42px;
-        border-radius: 10px;
-        background-color: #fff;
-        font-weight: bold;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #969696;
+        background: white;
+        outline: none;
 
         option {
             font-weight: bold;
@@ -109,9 +88,8 @@ export const Form = styled.form`
     }
 
     label {
-        font-size: 20px;
+        margin-bottom: 10px;
         font-weight: 500;
-        text-align: start;
 
         span {
             color: red;
@@ -121,33 +99,26 @@ export const Form = styled.form`
 `
 
 export const ContainerButtons = styled.div`
-    margin-top: 40px;
     display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-`;
+    flex-direction: row;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
 
-export const ButtonUpdate = styled.button`
-    background-color: #36b520;
-    color: #fff;
-    outline: none;
-    width: 120px;
-    height: 44px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    cursor: pointer;
-`;
+    button {
+        color: white;
+        background: #d81c48;
+        border: none;
+        width: 100px;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
 
-export const ButtonCancel = styled.button`
-    background-color: #d81c48;
-    color: #fff;
-    width: 120px;
-    height: 44px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 20px;
-    cursor: pointer;
+    .update {
+        background: #36b520;
+    }
 `;

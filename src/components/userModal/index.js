@@ -37,7 +37,7 @@ export const UserModal = ({
         Authorization: `Bearer ${token}`,
       },
     });
-    await userName()
+    userName()
     setVisible(false)
     e.target.reset();
   };

@@ -7,6 +7,7 @@ import logo from "../../assets/self-care.png";
 import loginImg from "../../assets/login.png";
 import { Link, useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
 
 export const Login = () => {
   const history = useHistory();
@@ -25,15 +26,19 @@ export const Login = () => {
   });
 
   const onSubmit = async ({ username, password }) => {
-    const response = await api.post("/sessions/", { username, password });
-    const access = await response.data.access;
-    const token = access;
-    const decode = jwt_decode(token);
-    const { user_id } = decode;
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("user_id", user_id);
-    history.push("/dashboard");
+    try {
+      const response = await api.post("/sessions/", { username, password });
+      const access = await response.data.access;
+      toast.success("Sucesso ao entrar");
+      const token = access;
+      const decode = jwt_decode(token);
+      const { user_id } = decode;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user_id", user_id);
+      history.push("/dashboard");
+    } catch (e) {
+      toast.error("Erro ao entrar na conta");
+    }
   };
 
   return (

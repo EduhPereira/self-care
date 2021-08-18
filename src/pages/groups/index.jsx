@@ -18,6 +18,13 @@ export const Groups = () => {
     const [showModal, setShowModal] = useState(false)
     const { id, token } = useUser()
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+    const [page, setPage] = useState(1)
+
+    const verifyNextPage = (nextPage) => {
+        if (!!nextPage) {
+            setPage(page + 1)
+        }
+    }
 
     const updateMedia = () => {
         setIsMobile(window.innerWidth < 768);
@@ -53,13 +60,15 @@ export const Groups = () => {
 
         getGroups()
         getSubscriptions()
+        setShowModal(false)
     }
 
     const getGroups = () => {
         api
-            .get("/groups/")
+            .get(`/groups/?page=${page}`)
             .then(res => {
-                setGroups(res.data.results)
+                setGroups([...groups, ...res.data.results])
+                verifyNextPage(res.data.next)
             })
             .catch(err => console.log(err))
     }
@@ -84,6 +93,12 @@ export const Groups = () => {
         getGroups()
         getSubscriptions()
     }, [])
+
+    useEffect(() => {
+        getGroups()
+    }, [page])
+
+    console.log(page)
 
     return (
         <>
@@ -114,7 +129,7 @@ export const Groups = () => {
                         </select>
                         <ContainerButtons>
                             <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
-                            <button className="update" type="submit" onClick={() => setShowModal(false)}>Criar</button>
+                            <button className="update" type="submit">Criar</button>
                         </ContainerButtons>
                     </Form>
                 </ModalDiv>
@@ -137,6 +152,7 @@ export const Groups = () => {
                     )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                     )}
                 </section>
+                <div className="box" />
             </Container>
         </>
     )

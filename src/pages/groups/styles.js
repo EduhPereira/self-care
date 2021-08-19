@@ -3,6 +3,9 @@ import styled from "styled-components";
 export const Container = styled.main`
 
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     section {
         margin-bottom: 24px;
@@ -24,6 +27,10 @@ export const Container = styled.main`
         font-size: 14px;
         color: #285bd3;
         cursor: pointer;
+    }
+
+    .box {
+        height: 117px;
     }
 `
 
@@ -52,13 +59,18 @@ export const Form = styled.form`
     transition: 0.2s;
     width: 270px;
     transform: ${(props) =>
-        `${props.showModal ? "translateY(0%)" : "translateY(50%)"}`};
+        `${props.showModal ? "translateY(0%)" : "translateY(20%)"}`};
     background: white;
     margin: 30px auto;
     display: flex;
     flex-direction: column;
     padding: 20px;
     border-radius: 15px;
+
+    @media(min-width: 768px) {
+        transform: ${(props) =>
+        `${props.showModal ? "translateY(0%)" : "translateY(50%)"}`};
+    }
 
     h2 {
         text-align: center;

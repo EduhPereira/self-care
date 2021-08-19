@@ -3,15 +3,12 @@ import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { format, parseISO } from "date-fns";
-import ptBR from "date-fns/locale/pt-BR";
-import { Container, Icons } from "./styles";
+import { Container, Icons, Card, Cards, CreateActivity } from "./styles";
 import "antd/dist/antd.css";
-import { SideNavigationMenu } from "../../components/sideNavigationMenu";
-import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ModalActivities } from "../modalActivities";
+import { NotFoundMsg } from "../notFoundMsg";
 
 export const GroupActivities = ({ groupId }) => {
   const [activityList, setActivityList] = useState([]);
@@ -19,22 +16,28 @@ export const GroupActivities = ({ groupId }) => {
   const [titleModal, setTitleModal] = useState("");
   const [page, setPage] = useState(1);
   const { id, token } = useUser();
-  const [date, setDate] = useState({});
   const [visible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  // Obtendo atividades da API
   const activities = async () => {
-    const response = await api.get(
-      `activities/?group=${groupId}&page=${page}`,
-      {
+    const response = await api
+      .get(`activities/?group=${groupId}&page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    setActivityList(response.data.results);
+      })
+      .catch((err) => toast.error(`❌, ${err}`));
+    const newActivity = response.data.results.map((activity) => ({
+      ...activity,
+      realization_time: new Date(activity.realization_time).toLocaleString(
+        "pt-BR"
+      ),
+    }));
+    setActivityList(newActivity);
   };
 
-  // Deletando atividades
+  // Deletando atividades da API
   const deleteActivity = (activityId) => {
     api
       .delete(`activities/${activityId}/`, {
@@ -43,33 +46,26 @@ export const GroupActivities = ({ groupId }) => {
         },
       })
       .then(
-        (response) =>
+        (_) =>
           setActivityList(
             activityList.filter((activity) => activity.id !== activityId)
           ),
-        toast.success("🦄 Atividade deletada com sucesso!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        })
+        toast.success("✅ Atividade deletada com sucesso!")
       )
-      .catch((err) =>
-        toast.error(`${err}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        })
-      );
+      .catch((err) => toast.error(`❌ ${err}`));
     activities();
   };
+
+  useEffect(() => {
+    activities();
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+  const updateMedia = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
   const openNewActivity = () => {
     setTitleModal("Crie sua atividade");
     setIsVisible(true);
@@ -83,38 +79,54 @@ export const GroupActivities = ({ groupId }) => {
 
   return (
     <>
-      <ModalActivities
-        activityFunc={activities}
-        setIsVisible={setIsVisible}
-        visible={visible}
-        activity={editActivity}
-        titleModal={titleModal}
-        groupId={groupId}
-        activityList={activityList}
-        setActivityList={setActivityList}
-      />
-      <button onClick={openNewActivity}>Criar nova atividade</button>
       <Container>
-        <h1>Atividades</h1>
-        {activityList.map((activity, index) => {
-          return (
-            <div key={index}>
-              <p>{activity.id}</p>
-              <p>{activity.title}</p>
-              <p>{activity.realization_time}</p>
-              <Icons>
-                <FaEdit
-                  className="Edit"
-                  onClick={() => openUpdateActivity(activity.id)}
-                />
-                <RiDeleteBin2Line
-                  className="Delete"
-                  onClick={() => deleteActivity(activity.id)}
-                />
-              </Icons>
-            </div>
-          );
-        })}
+        <ModalActivities
+          activityFunc={activities}
+          setIsVisible={setIsVisible}
+          visible={visible}
+          activity={editActivity}
+          titleModal={titleModal}
+          groupId={groupId}
+        />
+
+        <CreateActivity>
+          <button onClick={openNewActivity}>Criar nova atividade</button>
+        </CreateActivity>
+
+        <Cards>
+          <h1>Atividades</h1>
+          {activityList.length === 0 ? (
+            <NotFoundMsg>Você não criou nenhuma atividade</NotFoundMsg>
+          ) : (
+            <>
+              {activityList.map((activity, index) => {
+                return (
+                  <Card>
+                    <div key={index}>
+                      <p className="Title">
+                        <span className="Activity">Título</span>
+                        <p>{activity.title}</p>
+                      </p>
+                      <p className="Data">
+                        <span>Data:</span> {activity.realization_time}
+                      </p>
+                      <Icons>
+                        <div onClick={() => openUpdateActivity(activity.id)}>
+                          <FaEdit className="Edit" />
+                          <span>Editar</span>
+                        </div>
+                        <div onClick={() => deleteActivity(activity.id)}>
+                          <RiDeleteBin2Line className="Delete" />
+                          <span>Excluir</span>
+                        </div>
+                      </Icons>
+                    </div>
+                  </Card>
+                );
+              })}
+            </>
+          )}
+        </Cards>
       </Container>
     </>
   );

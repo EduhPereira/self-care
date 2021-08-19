@@ -1,5 +1,24 @@
 import styled from "styled-components";
 
+export const Container = styled.div`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  width: 90vw;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  padding-bottom: 150px;
+
+  .MuiCircularProgress-root {
+    margin-top: 150px;
+  }
+`;
+
 export const Cards = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,14 +50,43 @@ export const Card = styled.div`
 
   div:first-child {
     text-align: center;
-    margin-top: -5px;
   }
 
   span {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: default;
+  }
+
+  .Title {
+    text-align: center;
+  }
+
+  .Title .Goal {
     color: #071865;
     font-weight: bold;
     margin: 0;
     padding: 0;
+    cursor: default;
+  }
+  .Difficulty span {
+    color: #071865;
+    font-weight: bold;
+  }
+
+  .Category span {
+    color: #071865;
+    font-weight: bold;
+  }
+
+  .Achievements span {
+    color: #071865;
+    font-weight: bold;
+  }
+
+  p {
+    padding: 5px;
+    word-break: break-all;
   }
 
   @media (min-width: 768px) {
@@ -47,37 +95,46 @@ export const Card = styled.div`
   }
 `;
 
-export const Buttons = styled.div`
+export const Icons = styled.div`
+  text-align: right;
   display: flex;
-  justify-content: flex-end;
-  gap: 2px;
+  justify-content: center;
 
-  button {
+  svg {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    cursor: pointer;
-    outline: none;
-    background-color: transparent;
-    border: none;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 
-    svg {
-      width: 20px;
-      height: 20px;
-    }
+  span {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.85);
+    cursor: default;
+  }
 
-    .Delete {
-      color: #d81c48;
-    }
+  .Delete {
+    color: #d81c48;
+  }
 
-    .Edit {
-      color: #f7a902;
-    }
+  .Edit {
+    color: #f7a902;
+  }
+  .Check {
+    color: #285bd3;
+  }
 
-    .Check {
-      color: #285bd3;
-    }
+  @media (min-width: 768px) {
+    justify-content: flex-end;
   }
 `;
 
@@ -102,4 +159,22 @@ export const NextButton = styled(Button)`
   background-color: #5cb61f;
   border: none;
   color: #fff;
+`;
+
+export const CreateGoal = styled.div`
+  display: none;
+  button {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    padding: 10px;
+    background: #285bd3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media (min-width: 768px) {
+    display: flex;
+  }
 `;

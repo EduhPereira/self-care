@@ -6,7 +6,13 @@ import { toast } from "react-toastify";
 import { api } from "../../services/api";
 import { useUser } from "../../providers/UserProvider";
 
-export const ModalGoalsEdit = ({ visible, setVisible, idGoal }) => {
+export const ModalGoalsEdit = ({
+  visible,
+  setVisible,
+  idGoal,
+  titleModal,
+  onSubmit,
+}) => {
   const { token, id } = useUser();
   const schema = yup.object().shape({
     title: yup.string().required("Campo obrigatório."),
@@ -22,25 +28,34 @@ export const ModalGoalsEdit = ({ visible, setVisible, idGoal }) => {
     resolver: yupResolver(schema),
   });
 
-
   const closeModal = () => {
     setVisible(false);
   };
 
-  const updateGoal = async ({title, difficulty}) => {
-    const response = await api.patch(`/goals/${idGoal}/`, {title, difficulty}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const updateGoal = async ({ title, difficulty }) => {
+    const response = await api.patch(
+      `/goals/${idGoal}/`,
+      { title, difficulty },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     toast.warning("Hábito atualizado");
-    setVisible(false)
+    setVisible(false);
   };
 
   return (
     <Container visible={visible}>
-      <form onSubmit={handleSubmit(updateGoal)}>
-        <h2>Edite sua meta:</h2>
+      <form
+        onSubmit={
+          titleModal === "Edite sua meta"
+            ? handleSubmit(updateGoal)
+            : handleSubmit(onSubmit)
+        }
+      >
+        <h2>{titleModal}</h2>
         <label>Título:</label>
         <input type="text" {...register("title")} maxLength="25" />
         <label>Dificuldade:</label>
@@ -51,9 +66,15 @@ export const ModalGoalsEdit = ({ visible, setVisible, idGoal }) => {
           <option value="Difícil">Difícil</option>
         </select>
         <Buttons>
-          <button className="update" type="submit">
-            Atualizar
-          </button>
+          {titleModal === "Edite sua meta" ? (
+            <button className="update" type="submit">
+              Atualizar
+            </button>
+          ) : (
+            <button className="update" type="submit">
+              Criar
+            </button>
+          )}
           <button type="button" onClick={closeModal}>
             Cancelar
           </button>

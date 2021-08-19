@@ -4,6 +4,7 @@ import { api } from "../../services/api";
 import { toast } from "react-toastify";
 import {
   Container,
+  MobileContainer,
   ContentCategory,
   Cards,
   Card,
@@ -21,6 +22,14 @@ import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { User } from "../../components/user";
 import { useContext } from 'react';
 import { MenuItemFocusContext } from '../../providers/menuItemFocus';
+import { ListItemText } from "@material-ui/core";
+import React from "react";
+import { Typography } from "@material-ui/core";
+
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import { Divider } from "@material-ui/core";
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -115,154 +124,296 @@ export const Habits = () => {
   return (
     <>
       {isMobile ? (
-        <BottomNavigationMenu openHabit={openNewHabit} />
+        <>
+          <BottomNavigationMenu openHabit={openNewHabit} style={{zIndex: 999}}/>
+            <MobileContainer>
+              <ModalHabits
+                habitsF={habits}
+                setVisible={setVisible}
+                visible={visible}
+                habit={habitEdit}
+                titleModal={titleModal}
+              />
+              <ContentCategory>
+                <h3>Categorias</h3>
+
+                <select onChange={selectCategory}>
+                  <option selected value="Todas">
+                    Todas
+                  </option>
+                  <option value="Saúde">Saúde</option>
+                  <option value="Música">Música</option>
+                  <option value="Aventura">Aventura</option>
+                  <option value="Estudos">Estudos</option>
+                  <option value="Religão">Religão</option>
+                  <option value="Esporte">Esporte</option>
+                </select>
+              </ContentCategory>
+
+              {loading ? (
+                <CircularProgress />
+              ) : (
+                <div style={{zIndex: 1}}>
+                  {control === "Todas" ? (
+                    <>
+                      {habitsList.length === 0 ? (
+                        <NotFoundMsg>Você não criou nenhum hábito</NotFoundMsg>
+                      ) : (
+                        <div style={{width: '100%'}}>
+                          {habitsList.map((el) => (
+                              <div key={el.id} style={{position: 'relative', left: '-12vw'}}>
+                                <ListItemText
+                                  primary={
+                                    <React.Fragment>
+                                    <Typography
+                                        variant="h6"
+                                    >
+                                        {el.title}
+                                    </Typography>
+                                    </React.Fragment>
+                                }
+                                secondary={
+                                  <React.Fragment>
+                                  <Typography
+                                      component="span"
+                                      variant="body2"
+                                  >
+                                      <p><strong>Categoria:</strong> {el.category}</p>
+                                      <p><strong>Dificuldade:</strong> {el.difficulty}</p>
+                                      <p><strong>Dias conquistados: </strong> {el.how_much_achieved}</p>
+                                      <p><strong>Frequencia: </strong> {el.frequency}</p>
+                                  </Typography>                                          
+                                  </React.Fragment>
+                              }/>
+                                <Icons style={{position: 'relative', left: '40vw', paddingBottom: 10}}>
+                                  <div onClick={() => deleteHabit(el.id)}>
+                                    <DeleteForeverIcon style={{color: '#d81c48'}}/>
+                                  </div>
+                                  <div onClick={() => openUpdateHabit(el)}>
+                                    <EditIcon style={{color: '#f7a902'}}/>
+                                  </div>
+                                  <div
+                                    onClick={() =>
+                                      checkHabit(el.how_much_achieved, el.id)
+                                    }
+                                  >
+                                    <DoneAllIcon style={{color: '#285bd3'}}/>
+                                  </div>
+                                </Icons>
+                                <Divider/>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {habitListFilter.length === 0 ? (
+                        <NotFoundMsg>Sem hábitos nesta categoria</NotFoundMsg>
+                      ) : (
+                        <>
+                          {habitListFilter.map((el) => (
+                            <div key={el.id} style={{position: 'relative', left: '-12vw'}}>
+                            <ListItemText
+                              primary={
+                                <React.Fragment>
+                                <Typography
+                                    variant="h6"
+                                >
+                                    {el.title}
+                                </Typography>
+                                </React.Fragment>
+                            }
+                            secondary={
+                              <React.Fragment>
+                              <Typography
+                                  component="span"
+                                  variant="body2"
+                              >
+                                  <p><strong>Categoria:</strong> {el.category}</p>
+                                  <p><strong>Dificuldade:</strong> {el.difficulty}</p>
+                                  <p><strong>Dias conquistados: </strong> {el.how_much_achieved}</p>
+                                  <p><strong>Frequencia: </strong> {el.frequency}</p>
+                              </Typography>                                          
+                              </React.Fragment>
+                          }/>
+                            <Icons style={{position: 'relative', left: '40vw', paddingBottom: 10}}>
+                              <div onClick={() => deleteHabit(el.id)}>
+                                <DeleteForeverIcon style={{color: '#d81c48'}}/>
+                              </div>
+                              <div onClick={() => openUpdateHabit(el)}>
+                                <EditIcon style={{color: '#f7a902'}}/>
+                              </div>
+                              <div
+                                onClick={() =>
+                                  checkHabit(el.how_much_achieved, el.id)
+                                }
+                              >
+                                <DoneAllIcon style={{color: '#285bd3'}}/>
+                              </div>
+                            </Icons>
+                            <Divider/>
+                          </div>
+                        )
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </MobileContainer>
+        </>
       ) : (
-        <SideNavigationMenu />
-      )}
+        <>
+          <SideNavigationMenu />
+          <Container>
+            <User />
 
-      <Container>
-        <User />
+            <ModalHabits
+              habitsF={habits}
+              setVisible={setVisible}
+              visible={visible}
+              habit={habitEdit}
+              titleModal={titleModal}
+              style={{zIndex: 999}}
+            />
+            <ContentCategory>
+              <h3>Categorias</h3>
 
-        <ModalHabits
-          habitsF={habits}
-          setVisible={setVisible}
-          visible={visible}
-          habit={habitEdit}
-          titleModal={titleModal}
-        />
-        <ContentCategory>
-          <h3>Categorias</h3>
+              <select onChange={selectCategory}>
+                <option selected value="Todas">
+                  Todas
+                </option>
+                <option value="Saúde">Saúde</option>
+                <option value="Música">Música</option>
+                <option value="Aventura">Aventura</option>
+                <option value="Estudos">Estudos</option>
+                <option value="Religão">Religão</option>
+                <option value="Esporte">Esporte</option>
+              </select>
+            </ContentCategory>
 
-          <select onChange={selectCategory}>
-            <option selected value="Todas">
-              Todas
-            </option>
-            <option value="Saúde">Saúde</option>
-            <option value="Música">Música</option>
-            <option value="Aventura">Aventura</option>
-            <option value="Estudos">Estudos</option>
-            <option value="Religão">Religão</option>
-            <option value="Esporte">Esporte</option>
-          </select>
-        </ContentCategory>
+            <CreateHabit>
+              <button onClick={openNewHabit}>Crie seu hábito:</button>
+            </CreateHabit>
 
-        <CreateHabit>
-          <button onClick={openNewHabit}>Crie seu hábito:</button>
-        </CreateHabit>
-
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <Cards>
-            {control === "Todas" ? (
-              <>
-                {habitsList.length === 0 ? (
-                  <NotFoundMsg>Você não criou nenhum hábito</NotFoundMsg>
-                ) : (
-                  <>
-                    {habitsList.map((el) => {
-                      return (
-                        <Card key={el.id}>
-                          <div className="Title">
-                            <p className="Habit">Hábito: </p>
-                            <p>{el.title}</p>
-                          </div>
-                          <p className="Difficulty">
-                            <span>Dificuldade:</span> {el.difficulty}
-                          </p>
-                          <p className="Category">
-                            <span>Categoria:</span> {el.category}
-                          </p>
-                          <p className="Achievements">
-                            <span>Dias conquistados: </span>
-                            {el.how_much_achieved}
-                          </p>
-
-                          <p className="Frequency">
-                            <span>Frequencia: </span>
-                            {el.frequency}
-                          </p>
-                          <Icons>
-                            <div onClick={() => deleteHabit(el.id)}>
-                              <RiDeleteBin2Line className="Delete" />
-                              <span>Excluir</span>
-                            </div>
-                            <div onClick={() => openUpdateHabit(el)}>
-                              <FaEdit className="Edit" />
-                              <span>Editar</span>
-                            </div>
-                            <div
-                              onClick={() =>
-                                checkHabit(el.how_much_achieved, el.id)
-                              }
-                            >
-                              <FaCheck className="Check" />
-                              <span>Concluir</span>
-                            </div>
-                          </Icons>
-                        </Card>
-                      );
-                    })}
-                  </>
-                )}
-              </>
+            {loading ? (
+              <CircularProgress />
             ) : (
-              <>
-                {habitListFilter.length === 0 ? (
-                  <NotFoundMsg>Sem hábitos nesta categoria</NotFoundMsg>
+              <Cards>
+                {control === "Todas" ? (
+                  <>
+                    {habitsList.length === 0 ? (
+                      <NotFoundMsg>Você não criou nenhum hábito</NotFoundMsg>
+                    ) : (
+                      <>
+                        {habitsList.map((el) => {
+                          return (
+                            <Card key={el.id}>
+                              <div className="Title">
+                                <p className="Habit">Hábito: </p>
+                                <p>{el.title}</p>
+                              </div>
+                              <p className="Difficulty">
+                                <span>Dificuldade:</span> {el.difficulty}
+                              </p>
+                              <p className="Category">
+                                <span>Categoria:</span> {el.category}
+                              </p>
+                              <p className="Achievements">
+                                <span>Dias conquistados: </span>
+                                {el.how_much_achieved}
+                              </p>
+
+                              <p className="Frequency">
+                                <span>Frequencia: </span>
+                                {el.frequency}
+                              </p>
+                              <Icons>
+                                <div onClick={() => deleteHabit(el.id)}>
+                                  <RiDeleteBin2Line className="Delete" />
+                                  <span>Excluir</span>
+                                </div>
+                                <div onClick={() => openUpdateHabit(el)}>
+                                  <FaEdit className="Edit" />
+                                  <span>Editar</span>
+                                </div>
+                                <div
+                                  onClick={() =>
+                                    checkHabit(el.how_much_achieved, el.id)
+                                  }
+                                >
+                                  <FaCheck className="Check" />
+                                  <span>Concluir</span>
+                                </div>
+                              </Icons>
+                            </Card>
+                          );
+                        })}
+                      </>
+                    )}
+                  </>
                 ) : (
                   <>
-                    {habitListFilter.map((el) => {
-                      return (
-                        <Card key={el.id}>
-                          <div className="Title">
-                            <p className="Habit">Hábito: </p>
-                            <p>{el.title}</p>
-                          </div>
-                          <p className="Difficulty">
-                            <span>Dificuldade:</span> {el.difficulty}
-                          </p>
-                          <p className="Category">
-                            <span>Categoria:</span> {el.category}
-                          </p>
-                          <p className="Achievements">
-                            <span>Dias conquistados: </span>
-                            {el.how_much_achieved}
-                          </p>
+                    {habitListFilter.length === 0 ? (
+                      <NotFoundMsg>Sem hábitos nesta categoria</NotFoundMsg>
+                    ) : (
+                      <>
+                        {habitListFilter.map((el) => {
+                          return (
+                            <Card key={el.id}>
+                              <div className="Title">
+                                <p className="Habit">Hábito: </p>
+                                <p>{el.title}</p>
+                              </div>
+                              <p className="Difficulty">
+                                <span>Dificuldade:</span> {el.difficulty}
+                              </p>
+                              <p className="Category">
+                                <span>Categoria:</span> {el.category}
+                              </p>
+                              <p className="Achievements">
+                                <span>Dias conquistados: </span>
+                                {el.how_much_achieved}
+                              </p>
 
-                          <p className="Frequency">
-                            <span>Frequencia: </span>
-                            {el.frequency}
-                          </p>
+                              <p className="Frequency">
+                                <span>Frequencia: </span>
+                                {el.frequency}
+                              </p>
 
-                          <Icons>
-                            <div onClick={() => deleteHabit(el.id)}>
-                              <RiDeleteBin2Line className="Delete" />
-                              <span>Excluir</span>
-                            </div>
-                            <div onClick={() => openUpdateHabit(el)}>
-                              <FaEdit className="Edit" />
-                              <span>Editar</span>
-                            </div>
-                            <div
-                              onClick={() =>
-                                checkHabit(el.how_much_achieved, el.id)
-                              }
-                            >
-                              <FaCheck className="Check" />
-                              <span>Concluir</span>
-                            </div>
-                          </Icons>
-                        </Card>
-                      );
-                    })}
+                              <Icons>
+                                <div onClick={() => deleteHabit(el.id)}>
+                                  <RiDeleteBin2Line className="Delete" />
+                                  <span>Excluir</span>
+                                </div>
+                                <div onClick={() => openUpdateHabit(el)}>
+                                  <FaEdit className="Edit" />
+                                  <span>Editar</span>
+                                </div>
+                                <div
+                                  onClick={() =>
+                                    checkHabit(el.how_much_achieved, el.id)
+                                  }
+                                >
+                                  <FaCheck className="Check" />
+                                  <span>Concluir</span>
+                                </div>
+                              </Icons>
+                            </Card>
+                          );
+                        })}
+                      </>
+                    )}
                   </>
                 )}
-              </>
+              </Cards>
             )}
-          </Cards>
-        )}
-      </Container>
+          </Container>
+        </>
+      )}
     </>
   );
 };

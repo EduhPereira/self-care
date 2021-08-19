@@ -143,4 +143,4 @@ export const ContainerButtons = styled.div`
     .update {
         background: #36b520;
     }
-`;
+`

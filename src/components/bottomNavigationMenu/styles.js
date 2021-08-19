@@ -4,6 +4,7 @@ export const Background = styled.div`
     display: flex;
     justify-content: space-evenly;
     position: fixed;
+    z-index: 999;
     bottom: 0;
     background-color: white;
     height: 60px;

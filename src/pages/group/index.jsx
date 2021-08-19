@@ -6,6 +6,8 @@ import { Button, Container } from "../groups/styles";
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { GroupGoals } from "../../components/groupsGoals";
+import { useContext } from 'react';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 export const Group = () => {
   const params = useParams();
@@ -13,6 +15,8 @@ export const Group = () => {
   const [activitiesList, setActivitiesList] = useState([]);
   const [showList, setShowList] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const { setHomeFocus, setListFocus, setGroupFocus } = useContext(MenuItemFocusContext);
 
   const updateMedia = () => {
     setIsMobile(window.innerWidth < 768);
@@ -32,6 +36,12 @@ export const Group = () => {
 
   useEffect(() => {
     getActivities();
+  }, []);
+
+  useEffect(() => {
+    setHomeFocus(false);
+    setListFocus(false);
+    setGroupFocus(true);
   }, []);
 
   return (

@@ -13,6 +13,8 @@ import { NotFoundMsg } from "../../components/notFoundMsg";
 import { useHistory } from 'react-router-dom';
 import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup";
 import { ListItemText, Typography, Divider } from '@material-ui/core';
+import { useContext } from 'react';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
@@ -24,7 +26,9 @@ export const Groups = () => {
     const [showModal, setShowModal] = useState(false);
     const { id, token } = useUser();
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-    const { setCurrentGroup } = UseCurrentGroup()
+    const { setCurrentGroup } = UseCurrentGroup();
+
+    const { setHomeFocus, setListFocus, setGroupFocus } = useContext(MenuItemFocusContext);
 
     const history = useHistory();
 
@@ -111,6 +115,12 @@ export const Groups = () => {
         getSubscriptions();
     }, [])
 
+    useEffect(() => {
+        setHomeFocus(false);
+        setListFocus(false);
+        setGroupFocus(true);
+    }, []);
+
     return (
         <>
             {isMobile ? (
@@ -121,8 +131,8 @@ export const Groups = () => {
                     <div style={{paddingBottom: 130}}>
                         {(showList ? (groups.map(group => (
                             !!!group.users_on_group.find(group => group.id === Number(id)) && 
-                            <>
-                                <div key={group.id} style={{padding: 10}}>
+                            <div key={group.id}>
+                                <div style={{padding: 10}}>
                                     <ListItemText
                                         primary={
                                             <React.Fragment>
@@ -148,10 +158,10 @@ export const Groups = () => {
                                         onClick={() => handleClickSubscribe(group)}/>
                                 </div>
                                 <Divider/>
-                            </>
+                            </div>
                         ))) : (registeredGroups.length > 0 ? registeredGroups.map(group => (
-                            <>
-                                <div key={group.id} onClick={() => handleClickContainer(group)}
+                            <div key={group.id}>
+                                <div onClick={() => handleClickContainer(group)}
                                     style={{padding: 10}}>
                                     <ListItemText
                                             primary={
@@ -176,7 +186,7 @@ export const Groups = () => {
                                             }/>
                                 </div>
                                 <Divider/>
-                            </>
+                            </div>
                         )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                         )}
                     </div>

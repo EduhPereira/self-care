@@ -49,9 +49,13 @@ export const BottomNavigationMenu = ({openHabit}) => {
                 <Marker className={listFocus ? 'active' : 'hidden'}/>
                 <ListIcon className={listFocus ? 'focused' : 'default'} style={{fontSize: 30}}/>
             </IconButton>
-            <FloatingIconButton>
-                <AddIcon onClick={addHabit} style={{color: 'white', fontSize: 40}}/>
-            </FloatingIconButton>
+            {listFocus ? (
+                <FloatingIconButton>
+                    <AddIcon onClick={addHabit} style={{color: 'white', fontSize: 40}}/>
+                </FloatingIconButton>
+            ) : (
+                <div></div>
+            )}            
             <IconButton onClick={handleGroupClick}>
                 <Marker className={groupFocus ? 'active' : 'hidden'}/>
                 <GroupIcon className={groupFocus ? 'focused' : 'default'} style={{fontSize: 30}}/>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.main`
 
     text-align: center;
+    padding-bottom: 120px;
 
     section {
         margin-bottom: 24px;

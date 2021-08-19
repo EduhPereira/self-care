@@ -83,4 +83,8 @@ export const Buttons = styled.div`
   .update {
     background: #36b520;
   }
+
+  .ant-picker-input {
+    border: none;
+  }
 `;

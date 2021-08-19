@@ -5,9 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { format, parseISO } from "date-fns";
-import ptBR from "date-fns/locale/pt-BR";
-import { DatePicker, Space } from "antd";
+import { DatePicker } from "antd";
 import "antd/dist/antd.css";
 import { Buttons, Container } from "./styles";
 
@@ -21,7 +19,6 @@ export const ModalActivities = ({
 }) => {
   const { id, token } = useUser();
   const [date, setDate] = useState({});
-
   const schema = yup.object().shape({
     title: yup.string().required("Campo obrigatório!"),
   });
@@ -39,9 +36,8 @@ export const ModalActivities = ({
     setIsVisible(false);
   };
 
-  const onChange = (date, dateString) => {
-    /* date = format(parseIso()) */
-    setDate(dateString);
+  const onChange = (date) => {
+    setDate(date);
   };
 
   const createActivity = async ({ title }, e) => {
@@ -55,15 +51,7 @@ export const ModalActivities = ({
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("🦄 Atividade criada com sucesso!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    toast.success("✅ Atividade criada com sucesso!");
     e.target.reset();
     activityFunc();
     setIsVisible(false);
@@ -77,15 +65,7 @@ export const ModalActivities = ({
         Authorization: `Bearer ${token}`,
       },
     });
-    toast.success("🦄 Atividade editada com sucesso!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    toast.success("✅ Atividade criada com sucesso!");
     e.target.reset();
     activityFunc();
     setIsVisible(false);
@@ -103,9 +83,15 @@ export const ModalActivities = ({
         <h2>{titleModal}</h2>
         <label>Título:</label>
         <input type="text" name="title" {...register("title")} />
-        <Space direction="vertical" size={12}>
-          <DatePicker showTime onChange={onChange}></DatePicker>
-        </Space>
+        <DatePicker
+          format="DD-MM-YYYY HH:mm"
+          onChange={onChange}
+          size={"small"}
+          style={{
+            border: "none",
+          }}
+          placeholder="Data limite"
+        ></DatePicker>
         <Buttons>
           {titleModal === "Edite sua atividade" ? (
             <button className="update" type="submit">

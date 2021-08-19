@@ -144,7 +144,6 @@ export const Groups = () => {
                 </section>
                 <section>
                     {(showList ? (groups.map((item, index) => {
-                        console.log(!!!item.users_on_group.find(user => user.id === Number(id)), item.name)
                         return (
                             !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
                                 key={index}

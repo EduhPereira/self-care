@@ -6,7 +6,7 @@ export const Container = styled.div`
     padding: 0;
     box-sizing: border-box;
   }
-  width: 90vw;
+
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -19,11 +19,25 @@ export const Container = styled.div`
   }
 `;
 
+export const MobileContainer = styled.div`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  padding-bottom: 150px;
+`
+
 export const ContentCategory = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin: 20px auto;
 
   h3 {
     margin-right: 10px;
@@ -128,8 +142,8 @@ export const Icons = styled.div`
     justify-content: center;
     align-items: center;
     padding-top: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .Delete {

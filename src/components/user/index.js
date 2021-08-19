@@ -7,15 +7,12 @@ import { UserModal } from "../userModal";
 import { api } from "../../services/api";
 import { useEffect } from "react";
 import { useUser } from "../../providers/UserProvider";
-import { useHistory } from 'react-router-dom';
 
 export const User = ({habits}) => {
     const [name, setName] = useState('');
-    const { token, id } = useUser();
+    const { token, id, setIsLoggedIn } = useUser();
     const [user, setUser] = useState(false);
     const [visible, setVisible] = useState(false);
-
-    const history = useHistory();
 
     const openBox = () => {
         setUser(true);
@@ -33,7 +30,7 @@ export const User = ({habits}) => {
     const handleSignOut = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user_id');
-        history.push('/login');
+        setIsLoggedIn(false);
     }
 
     useEffect(()=>{

@@ -156,8 +156,7 @@ export const Groups = () => {
                                         primary={
                                             <React.Fragment>
                                                 <Typography
-                                                    component="h3"
-                                                    variant="body3"
+                                                    variant="h6"
                                                 >
                                                     {group.name}
                                                 </Typography>
@@ -186,8 +185,7 @@ export const Groups = () => {
                                         primary={
                                             <React.Fragment>
                                                 <Typography
-                                                    component="h3"
-                                                    variant="body3"
+                                                    variant="h6"
                                                 >
                                                     {group.name}
                                                 </Typography>

@@ -8,9 +8,11 @@ import loginImg from "../../assets/login.png";
 import { Link, useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
+import { useUser } from "../../providers/UserProvider";
 
 export const Login = () => {
   const history = useHistory();
+  const { setIsLoggedIn } = useUser();
 
   const schema = yup.object().shape({
     username: yup.string().required("*Campo obrigatório"),
@@ -35,12 +37,11 @@ export const Login = () => {
       const { user_id } = decode;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", user_id);
-      localStorage.getItem(user_id)
-      console.log(user_id)
-      if(user_id !== 0){
+      localStorage.getItem(user_id);
+      setIsLoggedIn(true);
+      if (user_id !== 0) {
         history.push("/dashboard");
-      }
-      else{
+      } else {
         toast.error("Erro ao entrar na conta");
       }
     } catch (e) {

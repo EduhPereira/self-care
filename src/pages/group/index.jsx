@@ -9,6 +9,8 @@ import { GroupGoals } from "../../components/groupsGoals";
 import { useContext } from 'react';
 import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 import { User } from "../../components/user";
+import { EditGroupButton } from "./styles";
+import { ModalEditGroup } from "../../components/modalEditGroup";
 
 export const Group = () => {
   const params = useParams();
@@ -16,12 +18,20 @@ export const Group = () => {
   const [activitiesList, setActivitiesList] = useState([]);
   const [showList, setShowList] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showModal, setShowModal] = useState(false)
+  const [group, setGroup] = useState({})
 
   const { setHomeFocus, setListFocus, setGroupFocus } = useContext(MenuItemFocusContext);
 
   const updateMedia = () => {
     setIsMobile(window.innerWidth < 768);
   };
+
+  // const getSpecificGroup = () => {
+  //   api
+  //     .get(`/groups/${params.id}/`)
+  //     .then(res => setGroup(res.data))
+  // }
 
   const getActivities = () => {
     api
@@ -45,13 +55,18 @@ export const Group = () => {
     setGroupFocus(true);
   }, []);
 
+  // useEffect(()=>{
+  //   return getSpecificGroup();    
+  // },[])
+
   return (
     <>
       {isMobile ? (
-        <BottomNavigationMenu/>
+        <BottomNavigationMenu />
       ) : (
         <SideNavigationMenu />
       )}
+      <ModalEditGroup groupId={params.id} showModal={showModal} setShowModal={setShowModal} />
       <Container>
         <section>
           <Button onClick={() => setShowList(true)} showList={showList}>
@@ -60,7 +75,9 @@ export const Group = () => {
           <Button onClick={() => setShowList(false)} showList={!showList}>
             Atividades
           </Button>
-          <div></div>
+          <div />
+          <EditGroupButton onClick={() => setShowModal(true)}>Editar Grupo</EditGroupButton>
+          <div />
           <Link to="/groups">Voltar</Link>
         </section>
         <section>

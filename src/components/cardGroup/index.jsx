@@ -31,9 +31,13 @@ export const CardGroup = ({ group, getGroups, getSubscriptions, registered }) =>
     return (
         <Container>
             <div onClick={handleClickContainer}>
-                <h1>{group.name}</h1>
-                <p>Descrição: {group.description}</p>
-                <p>Categoria: {group.category}</p>
+                <h1 className="bold">{group.name}</h1>
+                <p>
+                    <span className="bold">Descrição: </span>
+                    {group.description}</p>
+                <p>
+                    <span className="bold">Categoria: </span>
+                    {group.category}</p>
             </div>
             {!registered && <button className="button_group" onClick={handleClickSubscribe}>Participar</button>}
         </Container>

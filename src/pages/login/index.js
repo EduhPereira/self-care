@@ -35,7 +35,14 @@ export const Login = () => {
       const { user_id } = decode;
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", user_id);
-      history.push("/dashboard");
+      localStorage.getItem(user_id)
+      console.log(user_id)
+      if(user_id !== 0){
+        history.push("/dashboard");
+      }
+      else{
+        toast.error("Erro ao entrar na conta");
+      }
     } catch (e) {
       toast.error("Erro ao entrar na conta");
     }

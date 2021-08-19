@@ -9,6 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { SideNavigationMenu } from '../../components/sideNavigationMenu';
 import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
 import { NotFoundMsg } from "../../components/notFoundMsg"
+import { toast } from "react-toastify"
+import { User } from "../../components/user"
 
 export const Groups = () => {
 
@@ -18,6 +20,13 @@ export const Groups = () => {
     const [showModal, setShowModal] = useState(false)
     const { id, token } = useUser()
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+    const [page, setPage] = useState(1)
+
+    const verifyNextPage = (nextPage) => {
+        if (!!nextPage) {
+            setPage(page + 1)
+        }
+    }
 
     const updateMedia = () => {
         setIsMobile(window.innerWidth < 768);
@@ -39,29 +48,33 @@ export const Groups = () => {
                 Authorization: `Bearer ${token}`,
             }
         }).then(res => {
-            console.log("grupo criado!", res)
+            toast.success("Grupo criado!")
             return res
         }).then(res => {
             api.post(`/groups/${res.data.id}/subscribe/`, null, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
-            }).then(res => {
-                console.log('incrição', res)
-            }).catch(err => console.log(err))
-        }).catch(err => console.log(err))
+            })
+        }).catch(err => toast.error("Erro ao criar grupo, tente mais tarde."))
 
+        setPage(2)
+        setGroups([])
         getGroups()
         getSubscriptions()
+        setShowModal(false)
     }
 
     const getGroups = () => {
         api
-            .get("/groups/")
+            .get(`/groups/?page=${page}`)
             .then(res => {
-                setGroups(res.data.results)
+                setGroups([...groups, ...res.data.results])
+                verifyNextPage(res.data.next)
             })
-            .catch(err => console.log(err))
+            .catch(err =>
+                toast.error("Erro ao carregar todos os grupos, reinicie a página (F5)")
+            )
     }
 
     const getSubscriptions = () => {
@@ -72,7 +85,7 @@ export const Groups = () => {
         }).then(res => {
             setRegisteredGroups(res.data)
         }
-        ).catch(err => console.log(err))
+        ).catch(err => toast.error("Erro ao carregar inscrições, reinicie a página (F5)"))
     }
 
     useEffect(() => {
@@ -85,6 +98,10 @@ export const Groups = () => {
         getSubscriptions()
     }, [])
 
+    useEffect(() => {
+        getGroups()
+    }, [page])
+
     return (
         <>
             {isMobile ? (
@@ -93,6 +110,7 @@ export const Groups = () => {
                 <SideNavigationMenu />
             )}
             <Container>
+                <User />
                 <ModalDiv showModal={showModal}>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <h2>Criar Grupo</h2>
@@ -114,7 +132,7 @@ export const Groups = () => {
                         </select>
                         <ContainerButtons>
                             <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
-                            <button className="update" type="submit" onClick={() => setShowModal(false)}>Criar</button>
+                            <button className="update" type="submit">Criar</button>
                         </ContainerButtons>
                     </Form>
                 </ModalDiv>
@@ -125,18 +143,21 @@ export const Groups = () => {
                     <span onClick={() => setShowModal(true)}>Criar seu grupo</span>
                 </section>
                 <section>
-                    {(showList ? (groups.map(item => (
-                        !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
-                            key={item.id}
-                            group={item}
-                            getGroups={getGroups}
-                            getSubscriptions={getSubscriptions}
-                        />
-                    ))) : (registeredGroups.length > 0 ? registeredGroups.map(item => (
-                        <CardGroup key={item.id} group={item} registered />
+                    {(showList ? (groups.map((item, index) => {
+                        return (
+                            !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
+                                key={index}
+                                group={item}
+                                getGroups={getGroups}
+                                getSubscriptions={getSubscriptions}
+                            />
+                        )
+                    })) : (registeredGroups.length > 0 ? registeredGroups.map((item, index) => (
+                        <CardGroup key={index} group={item} registered />
                     )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                     )}
                 </section>
+                <div className="box" />
             </Container>
         </>
     )

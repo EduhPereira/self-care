@@ -6,6 +6,7 @@ import { Button, Container } from "../groups/styles";
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { GroupGoals } from "../../components/groupsGoals";
+import { User } from "../../components/user";
 
 export const Group = () => {
   const params = useParams();
@@ -31,6 +32,7 @@ export const Group = () => {
 
   return (
     <Container>
+      <User />
       <section>
         <Button onClick={() => setShowList(true)} showList={showList}>
           Metas

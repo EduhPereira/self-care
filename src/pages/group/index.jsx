@@ -26,28 +26,40 @@ export const Group = () => {
   };
 
   useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  });
+
+  useEffect(() => {
     getActivities();
   }, []);
 
   return (
-    <Container>
-      <section>
-        <Button onClick={() => setShowList(true)} showList={showList}>
-          Metas
-        </Button>
-        <Button onClick={() => setShowList(false)} showList={!showList}>
-          Atividades
-        </Button>
-        <div></div>
-        <Link to="/groups">Voltar</Link>
-      </section>
-      <section>
-        {showList ? (
-          <GroupGoals GroupId={params.id} />
-        ) : (
-          <GroupActivities groupId={params.id} />
-        )}
-      </section>
-    </Container>
+    <>
+      {isMobile ? (
+        <BottomNavigationMenu/>
+      ) : (
+        <SideNavigationMenu />
+      )}
+      <Container>
+        <section>
+          <Button onClick={() => setShowList(true)} showList={showList}>
+            Metas
+          </Button>
+          <Button onClick={() => setShowList(false)} showList={!showList}>
+            Atividades
+          </Button>
+          <div></div>
+          <Link to="/groups">Voltar</Link>
+        </section>
+        <section>
+          {showList ? (
+            <GroupGoals GroupId={params.id} />
+          ) : (
+            <GroupActivities groupId={params.id} />
+          )}
+        </section>
+      </Container>
+    </>
   );
 };

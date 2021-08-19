@@ -38,6 +38,16 @@ export const Button = styled.button`
     background-color: ${props => (props.showList ? "#285BD3" : "#efefef")};
     color: ${props => (props.showList ? "#fff" : "#000")};
 `
+
+export const MobileButton = styled.button`
+    width: 50%;
+    height: 40px;
+    border: none;
+    font-weight: 600;
+    background-color: ${props => (props.showList ? "#285BD3" : "#efefef")};
+    color: ${props => (props.showList ? "#fff" : "#000")};
+`
+
 export const ModalDiv = styled.div`
     width: 100vw;
     height: 100vh;

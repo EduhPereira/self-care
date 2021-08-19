@@ -12,6 +12,7 @@ import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from 'swiper/core';
 import { List } from '@material-ui/core';
+import { User } from "../../components/user";
 
 SwiperCore.use([Navigation]);
 
@@ -100,7 +101,9 @@ export const Dashboard = () => {
                     </MobileContainer>
                 </>                
             ) : (
-                <>
+                <div style={{display: 'flex',
+                    flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <User/>
                     <SideNavigationMenu/>
                     <DesktopContainer>
                         <h1>Hábitos</h1>
@@ -132,7 +135,7 @@ export const Dashboard = () => {
                             })}
                         </CardsContainer>
                     </DesktopContainer>
-                </>
+                </div>
             )}
             
         </div>

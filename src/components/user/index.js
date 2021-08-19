@@ -1,39 +1,49 @@
-import { Container, UserContent, BoxUser } from "./styles"
-import{ BiUserCircle } from 'react-icons/bi'
-import imgLogo from '../../assets/self-care.png'
-import { AiOutlineSetting, AiOutlinePoweroff }  from 'react-icons/ai'
-import { TiArrowSortedUp } from 'react-icons/ti'
-import { useState } from "react"
-import { UserModal } from "../userModal"
-import { api } from "../../services/api"
-import { useEffect } from "react"
-import { useUser } from "../../providers/UserProvider"
+import { Container, UserContent, BoxUser } from "./styles";
+import{ BiUserCircle } from 'react-icons/bi';
+import imgLogo from '../../assets/self-care.png';
+import { AiOutlineSetting, AiOutlinePoweroff }  from 'react-icons/ai';
+import { useState } from "react";
+import { UserModal } from "../userModal";
+import { api } from "../../services/api";
+import { useEffect } from "react";
+import { useUser } from "../../providers/UserProvider";
+import { useHistory } from 'react-router-dom';
+
 export const User = ({habits}) => {
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
     const { token, id } = useUser();
-    const [user, setUser] = useState(false)
-    const [visible, setVisible] = useState(false)
+    const [user, setUser] = useState(false);
+    const [visible, setVisible] = useState(false);
+
+    const history = useHistory();
+
     const openBox = () => {
-        setUser(true)
+        setUser(true);
     }
 
     const closeBox = () => {
-        setUser(false)
+        setUser(false);
     }
 
     const openUserModal = () => {
-        setVisible(true)
-        setUser(false)
+        setVisible(true);
+        setUser(false);
+    }
+
+    const handleSignOut = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
+        history.push('/login');
     }
 
     useEffect(()=>{
-        userName()
+        userName();
       }, [])
     
       const userName = async () => {
-        const response = await api.get(`/users/${id}/`)
-        const {data} = await response
-        setName(data.username)
+        const response = await api.get(`/users/${id}/`);
+        const {data} = await response;
+        setName(data.username);
       }
     
 
@@ -63,7 +73,7 @@ export const User = ({habits}) => {
 
                 <div>
                     <AiOutlinePoweroff className="PowerOf"/>
-                    <span>Sair</span>
+                    <span onClick={handleSignOut}>Sair</span>
                 </div>
 
             </BoxUser>

@@ -1,12 +1,19 @@
 import './style.css';
+import 'swiper/swiper.min.css';
+import 'swiper/components/pagination/pagination.min.css';
 
 import { useState, useEffect } from 'react';
-import { DesktopContainer, Card, CardsContainer } from './styles';
+import { DesktopContainer, MobileContainer, Card, CardsContainer } from './styles';
 import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
 import { CircularProgress } from "@material-ui/core";
 import { SideNavigationMenu } from '../../components/sideNavigationMenu';
 import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Navigation } from 'swiper/core';
+import { List } from '@material-ui/core';
+
+SwiperCore.use([Navigation]);
 
 export const Dashboard = () => {
 
@@ -55,7 +62,43 @@ export const Dashboard = () => {
     return (
         <div>
             {isMobile ? (
-                <BottomNavigationMenu/>
+                <>
+                    <BottomNavigationMenu style={{zIndex: 10}}/>
+                    <MobileContainer>
+                        <List className='listView'>
+                            <h1>Hábitos</h1>                         
+                            {loading ? (
+                                <CircularProgress/>
+                            ) : (
+                                <Swiper navigation={true} className='mySwiper' spaceBetween={50} slidesPerView={1}>
+                                    {habitsList.map((habit) => (
+                                        <SwiperSlide>
+                                            <Card>
+                                                <p className='item-title'><strong>{habit.title}</strong></p>
+                                                <p className='item-category'><strong>Categoria: </strong>{habit.category}</p>
+                                            </Card>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>                            
+                            )} 
+                            <h1>Grupos</h1>
+                            <Swiper navigation={true} className='mySwiper'>
+                                {groups.map((group) => {
+                                    if (!!group.users_on_group.find(user => user.id === Number(id))) {
+                                        return (
+                                            <SwiperSlide navigation={true} key={group.id}>
+                                                <Card>
+                                                    <p className='item-title'><strong>{group.name}</strong></p>
+                                                    <p className='item-category'><strong>Categoria: </strong>{group.category}</p>
+                                                </Card>
+                                            </SwiperSlide>                                        
+                                        );
+                                    }
+                                })}
+                            </Swiper>
+                        </List>
+                    </MobileContainer>
+                </>                
             ) : (
                 <>
                     <SideNavigationMenu/>

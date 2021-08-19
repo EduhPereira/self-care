@@ -38,6 +38,7 @@ export const Login = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("user_id", user_id);
       localStorage.getItem(user_id);
+    
       setIsLoggedIn(true);
       if (user_id !== 0) {
         history.push("/dashboard");

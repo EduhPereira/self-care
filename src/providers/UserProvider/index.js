@@ -5,7 +5,9 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [id, setId] = useState(localStorage.getItem("user_id") || 0);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("token") || false);
+
+
 
   return (
     <UserContext.Provider

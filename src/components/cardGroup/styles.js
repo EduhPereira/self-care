@@ -12,14 +12,18 @@ export const Container = styled.div`
     @media(min-width:768px) {
         width: 577px;
         min-height: 136px;
-        background-color: #caf8d5;
-        box-shadow: 10px 10px 0px #097a52;
+        box-shadow: 0 0 4px #696969;
         border-radius: 14px;
-        margin: 65px auto;
+        margin: 30px auto;
     }
 
     div {
         cursor: pointer;
+
+        .bold {
+            color: #071865;
+            font-weight: bold;
+        }
     }
 
     h1 {

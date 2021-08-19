@@ -4,6 +4,7 @@ import { Background, IconButton, FloatingIconButton, Marker } from './styles';
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { MenuItemFocusContext } from '../../providers/menuItemFocus';
+import { useUser } from "../../providers/UserProvider";
 
 import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
@@ -14,6 +15,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 export const BottomNavigationMenu = ({openHabit}) => {
 
     const {homeFocus, listFocus, groupFocus, signOutFocus} = useContext(MenuItemFocusContext);
+    const { setIsLoggedIn } = useUser();
 
     const history = useHistory();
 
@@ -32,7 +34,7 @@ export const BottomNavigationMenu = ({openHabit}) => {
     const handleSignOut = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user_id');
-        history.push('/login');
+        setIsLoggedIn(false);
     }
 
     const addHabit = () => {

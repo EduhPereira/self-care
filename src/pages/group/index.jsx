@@ -31,23 +31,25 @@ export const Group = () => {
   }, []);
 
   return (
-    <>
-      <Container>
-        <User />
-        <section>
-          <Button onClick={() => setShowList(true)} showList={showList}>
-            Metas
-          </Button>
-          <Button onClick={() => setShowList(false)} showList={!showList}>
-            Atividades
-          </Button>
-          <div></div>
-          <Link to="/groups">Voltar</Link>
-        </section>
-        <section>
-          {showList ? <GroupGoals GroupId={params.id} /> : <GroupActivities />}
-        </section>
-      </Container>
-    </>
+    <Container>
+      <User />
+      <section>
+        <Button onClick={() => setShowList(true)} showList={showList}>
+          Metas
+        </Button>
+        <Button onClick={() => setShowList(false)} showList={!showList}>
+          Atividades
+        </Button>
+        <div></div>
+        <Link to="/groups">Voltar</Link>
+      </section>
+      <section>
+        {showList ? (
+          <GroupGoals GroupId={params.id} />
+        ) : (
+          <GroupActivities groupId={params.id} />
+        )}
+      </section>
+    </Container>
   );
 };

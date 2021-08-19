@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { toast } from "react-toastify";
+import { ModalGoalsEdit } from "../modalGoalsEdit";
 
 export const GroupGoals = ({ GroupId }) => {
   const [updater, setUpdater] = useState(0);
@@ -12,6 +13,8 @@ export const GroupGoals = ({ GroupId }) => {
   const [page, setPage] = useState(1);
   const [group, setGroup] = useState(GroupId);
   const { id, token } = useUser();
+  const [visible, setVisible] = useState(false)
+  const [idGoal, setIdGoal] = useState(0)
 
   useEffect(() => {
     api
@@ -71,8 +74,19 @@ export const GroupGoals = ({ GroupId }) => {
     setPage(page + 1);
   };
 
+  const handleEdit = (id) => {
+    setIdGoal(id)
+    setVisible(true)
+  }
+
   return (
     <>
+      <ModalGoalsEdit 
+      visible={visible}
+      setVisible={setVisible}
+      idGoal={idGoal}
+      />
+
       <h2>Adicionar uma nova meta</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>
@@ -107,7 +121,7 @@ export const GroupGoals = ({ GroupId }) => {
             <div>{goal.difficulty}</div>
             <div>{goal.how_much_achieved}</div>
             <div>
-              <button>Editar</button>
+              <button onClick={() => handleEdit(goal.id)}>Editar</button>
               <button onClick={() => handleDelete(goal.id)}>Deletar</button>
               <button>Check</button>
             </div>

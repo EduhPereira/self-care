@@ -1,93 +1,137 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { api } from "../../services/api";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { toast } from "react-toastify";
-import { DatePicker, Space } from "antd";
-import { Container } from "./styles";
+import "react-toastify/dist/ReactToastify.css";
+import { format, parseISO } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+import { Container, Icons } from "./styles";
 import "antd/dist/antd.css";
-import { UseCurrentGroup } from "../../providers/currentGroup/currentGroup";
+import { SideNavigationMenu } from "../../components/sideNavigationMenu";
+import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
+import { FaEdit } from "react-icons/fa";
+import { RiDeleteBin2Line } from "react-icons/ri";
+import { ModalActivities } from "../modalActivities";
 
-export const GroupActivities = () => {
+export const GroupActivities = ({ groupId }) => {
   const [activityList, setActivityList] = useState([]);
+  const [editActivity, setEditActivity] = useState([]);
+  const [titleModal, setTitleModal] = useState("");
   const [page, setPage] = useState(1);
-  const [group, setGroup] = useState(33);
   const { id, token } = useUser();
-  const { RangePicker } = DatePicker;
   const [date, setDate] = useState({});
+  const [visible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const activities = async () => {
+    const response = await api.get(
+      `activities/?group=${groupId}&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setActivityList(response.data.results);
+  };
 
   useEffect(() => {
-    api
-      .get(`activities/?group=${group}&page=${page}`)
-      .then((response) => setActivityList(response.data.results))
-      .catch((err) => console.log(err));
-  }, [page]);
-
-  const schema = yup.object().shape({
-    title: yup.string().required("Campo obrigatório!"),
+    activities();
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const createActivity = ({ title, date }) => {
-    const newActivity = {
-      title: title,
-      realization_time: date,
-      group: group,
-    };
+  const updateMedia = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+  // Deletando atividades
+  const deleteActivity = (activityId) => {
     api
-      .post("/activities/", newActivity, {
+      .delete(`activities/${activityId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        const activity = response.data;
-        setActivityList([...activityList, activity]);
-        console.log("criou!");
-      })
-      .catch((err) => console.log(err));
+      .then(
+        (response) =>
+          setActivityList(
+            activityList.filter((activity) => activity.id !== activityId)
+          ),
+        toast.success("🦄 Atividade deletada com sucesso!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      )
+      .catch((err) =>
+        toast.error(`${err}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        })
+      );
+    activities();
+  };
+  const openNewActivity = () => {
+    setTitleModal("Crie sua atividade");
+    setIsVisible(true);
   };
 
-  const onChange = (date) => {
-    setDate(date);
+  const openUpdateActivity = (activity) => {
+    setTitleModal("Edite sua atividade");
+    setIsVisible(true);
+    setEditActivity(activity);
   };
 
   return (
-    <Container>
-      <form onSubmit={handleSubmit(createActivity)}>
-        <label>
-          Título <span>{errors.title?.message}</span>
-        </label>
-        <input
-          placeholder="Título da atividade"
-          type="text"
-          name="title"
-          {...register("title")}
-        />
-        <DatePicker showTime onChange={onChange} />
+    <>
+      {isMobile ? (
+        <BottomNavigationMenu openActivity={openNewActivity} />
+      ) : (
+        <SideNavigationMenu />
+      )}
 
-        <button className="button_group" type="submit">
-          Adicionar atividade
-        </button>
-      </form>
-      <h1>Atividades</h1>
-      {activityList.map((activity) => {
-        return (
-          <div>
-            <p>{activity.title}</p>
-            <p>{activity.realization_time}</p>
-            <button>Editar</button>
-            <button>Deletar</button>
-          </div>
-        );
-      })}
-    </Container>
+      <ModalActivities
+        activityFunc={activities}
+        setIsVisible={setIsVisible}
+        visible={visible}
+        activity={editActivity}
+        titleModal={titleModal}
+        groupId={groupId}
+        activityList={activityList}
+        setActivityList={setActivityList}
+      />
+      <button onClick={openNewActivity}>Criar nova atividade</button>
+      <Container>
+        <h1>Atividades</h1>
+        {activityList.map((activity, index) => {
+          return (
+            <div key={index}>
+              <p>{activity.id}</p>
+              <p>{activity.title}</p>
+              <p>{activity.realization_time}</p>
+              <Icons>
+                <FaEdit
+                  className="Edit"
+                  onClick={() => openUpdateActivity(activity.id)}
+                />
+                <RiDeleteBin2Line
+                  className="Delete"
+                  onClick={() => deleteActivity(activity.id)}
+                />
+              </Icons>
+            </div>
+          );
+        })}
+      </Container>
+    </>
   );
 };

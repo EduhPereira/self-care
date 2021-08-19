@@ -42,7 +42,11 @@ export const Group = () => {
         <Link to="/groups">Voltar</Link>
       </section>
       <section>
-        {showList ? <GroupGoals GroupId={params.id} /> : <GroupActivities />}
+        {showList ? (
+          <GroupGoals GroupId={params.id} />
+        ) : (
+          <GroupActivities groupId={params.id} />
+        )}
       </section>
     </Container>
   );

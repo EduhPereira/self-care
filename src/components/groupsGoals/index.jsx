@@ -6,9 +6,18 @@ import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { toast } from "react-toastify";
 import { ModalGoalsEdit } from "../modalGoalsEdit";
-import { Cards, Card, Buttons, PreviousButton, NextButton } from "./styles";
+import {
+  Cards,
+  Card,
+  PreviousButton,
+  NextButton,
+  CreateGoal,
+  Container,
+  Icons,
+} from "./styles";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { NotFoundMsg } from "../notFoundMsg";
 
 export const GroupGoals = ({ GroupId }) => {
   const [updater, setUpdater] = useState(0);
@@ -18,6 +27,9 @@ export const GroupGoals = ({ GroupId }) => {
   const { id, token } = useUser();
   const [visible, setVisible] = useState(false);
   const [idGoal, setIdGoal] = useState(0);
+  const [editGoal, setEditGoal] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [titleModal, setTitleModal] = useState("");
 
   useEffect(() => {
     api
@@ -25,6 +37,11 @@ export const GroupGoals = ({ GroupId }) => {
       .then((response) => setGoalsList(response.data.results))
       .catch((e) => console.log(e.message));
   }, [page, updater]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  }, []);
 
   const schema = yup.object().shape({
     title: yup.string().required("O Campo é Obrigatório"),
@@ -52,8 +69,9 @@ export const GroupGoals = ({ GroupId }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(toast.success("Nova Meta Adicionada"))
-      .catch();
+      .then(toast.success("✅ Nova Meta Adicionada"))
+      .catch((err) => toast.error(`❌ ${err}`));
+    setVisible(false);
   };
 
   const handleDelete = (id) => {
@@ -63,8 +81,8 @@ export const GroupGoals = ({ GroupId }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(toast.warning("Meta Removida"))
-      .catch();
+      .then(toast.warning("✔️ Meta Removida"))
+      .catch((err) => toast.error(`❌ ${err}`));
   };
 
   const handlePrevious = () => {
@@ -73,81 +91,99 @@ export const GroupGoals = ({ GroupId }) => {
     }
   };
 
+  const checkGoal = async (value, id) => {
+    const response = await api.patch(
+      `/goals/${id}/`,
+      { how_much_achieved: value + 1, achieved: true },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.info("Hábito feito");
+  };
+
   const handleNext = () => {
     setPage(page + 1);
   };
 
+  const updateMedia = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
   const handleEdit = (id) => {
     setIdGoal(id);
+    setTitleModal("Edite sua meta");
+    setVisible(true);
+  };
+
+  const openNewGoal = () => {
+    setTitleModal("Crie sua meta");
     setVisible(true);
   };
 
   return (
     <>
-      <ModalGoalsEdit
-        visible={visible}
-        setVisible={setVisible}
-        idGoal={idGoal}
-      />
-
-      <h2>Adicionar uma nova meta</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Título: <span>{errors.title?.message}</span>
-        </label>
-        <input
-          type="text"
-          name="title"
-          placeholder="Dê um título para a meta"
-          {...register("title")}
+      <Container>
+        <ModalGoalsEdit
+          visible={visible}
+          setVisible={setVisible}
+          idGoal={idGoal}
+          titleModal={titleModal}
+          onSubmit={onSubmit}
         />
 
-        <label>
-          Dificuldade: <span>{errors.difficulty?.message}</span>
-        </label>
-        <select name="difficulty" {...register("difficulty")}>
-          <option selected value="Fácil">
-            Fácil
-          </option>
-          <option value="Medium">Medium</option>
-          <option value="Difícil">Difícil</option>
-        </select>
-
-        <button type="submit">Adicionar</button>
-      </form>
-
-      <Cards>
-        <h2>Metas do Grupo</h2>
-        {goalsList.map((goal) => {
-          return (
-            <Card key={goal.id}>
-              <div>
-                <span>Meta: </span>
-                {goal.title}
-              </div>
-              <div>
-                <span>Dificuldade: </span>
-                {goal.difficulty}
-              </div>
-              <div>
-                <span>Quanto Conquistado: </span>
-                {goal.how_much_achieved}
-              </div>
-              <Buttons>
-                <button onClick={() => handleEdit(goal.id)}>
-                  <FaEdit className="Edit" />
-                </button>
-                <button onClick={() => handleDelete(goal.id)}>
-                  <RiDeleteBin2Line className="Delete" />
-                </button>
-                <button>
-                  <FaCheck className="Check" />
-                </button>
-              </Buttons>
-            </Card>
-          );
-        })}
-      </Cards>
+        <CreateGoal>
+          <button onClick={openNewGoal}>Criar nova meta</button>
+        </CreateGoal>
+        <Cards>
+          <h1>Metas</h1>
+          {goalsList.length === 0 ? (
+            <NotFoundMsg>Você não criou nenhuma meta</NotFoundMsg>
+          ) : (
+            <>
+              {goalsList.map((goal) => {
+                return (
+                  <Card key={goal.id}>
+                    <div>
+                      <p className="Title">
+                        <span className="Goal">Título</span>
+                        <p>{goal.title}</p>
+                      </p>
+                    </div>
+                    <p className="Difficulty">
+                      <span>Dificuldade:</span> {goal.difficulty}
+                    </p>
+                    <p className="Achievements">
+                      <span>Dias conquistados: </span>
+                      {goal.how_much_achieved}
+                    </p>
+                    <Icons>
+                      <div onClick={() => handleEdit(goal.id)}>
+                        <FaEdit className="Edit" />
+                        <span>Editar</span>
+                      </div>
+                      <div onClick={() => handleDelete(goal.id)}>
+                        <RiDeleteBin2Line className="Delete" />
+                        <span>Excluir</span>
+                      </div>
+                      <div
+                        onClick={() =>
+                          checkGoal(goal.how_much_achieved, goal.id)
+                        }
+                      >
+                        <FaCheck className="Check" />
+                        <span>Concluir</span>
+                      </div>
+                    </Icons>
+                  </Card>
+                );
+              })}
+            </>
+          )}
+        </Cards>
+      </Container>
 
       <PreviousButton onClick={handlePrevious}>Anterior</PreviousButton>
       <NextButton onClick={handleNext}>Próxima</NextButton>

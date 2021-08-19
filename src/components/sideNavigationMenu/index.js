@@ -11,35 +11,19 @@ import GroupIcon from '@material-ui/icons/Group';
 
 export const SideNavigationMenu = () => {
 
-    const {homeFocus, listFocus, groupFocus, chatFocus, 
-        setHomeFocus, setListFocus, setGroupFocus, setChatFocus} = useContext(MenuItemFocusContext);
+    const {homeFocus, listFocus, groupFocus} = useContext(MenuItemFocusContext);
 
     const history = useHistory();
 
     const handleHomeClick = () => {
-        setHomeFocus(true);
-        setListFocus(false);
-        setGroupFocus(false);
-        setChatFocus(false);
-        localStorage.setItem('focus', 'home');
         history.push('/dashboard');
     }
     
     const handleListClick = () => {
-        setHomeFocus(false);
-        setListFocus(true);
-        setGroupFocus(false);
-        setChatFocus(false);
-        localStorage.setItem('focus', 'list');
         history.push('/habits');
     }
     
     const handleGroupClick = () => {
-        setHomeFocus(false);
-        setListFocus(false);
-        setGroupFocus(true);
-        setChatFocus(false);
-        localStorage.setItem('focus', 'group');
         history.push('/groups');
     }
 

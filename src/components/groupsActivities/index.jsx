@@ -21,7 +21,6 @@ export const GroupActivities = ({ groupId }) => {
   const { id, token } = useUser();
   const [date, setDate] = useState({});
   const [visible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const activities = async () => {
     const response = await api.get(
@@ -35,15 +34,6 @@ export const GroupActivities = ({ groupId }) => {
     setActivityList(response.data.results);
   };
 
-  useEffect(() => {
-    activities();
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-  });
-
-  const updateMedia = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
   // Deletando atividades
   const deleteActivity = (activityId) => {
     api
@@ -93,12 +83,6 @@ export const GroupActivities = ({ groupId }) => {
 
   return (
     <>
-      {isMobile ? (
-        <BottomNavigationMenu openActivity={openNewActivity} />
-      ) : (
-        <SideNavigationMenu />
-      )}
-
       <ModalActivities
         activityFunc={activities}
         setIsVisible={setIsVisible}

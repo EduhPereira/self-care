@@ -12,6 +12,9 @@ import { BottomNavigationMenu } from '../../components/bottomNavigationMenu';
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from 'swiper/core';
 import { List } from '@material-ui/core';
+import { User } from "../../components/user";
+import { useContext } from 'react';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 SwiperCore.use([Navigation]);
 
@@ -22,6 +25,8 @@ export const Dashboard = () => {
     const [groups, setGroups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    const { setHomeFocus, setListFocus, setGroupFocus } = useContext(MenuItemFocusContext);
 
     const updateMedia = () => {
         setIsMobile(window.innerWidth < 768);
@@ -59,6 +64,12 @@ export const Dashboard = () => {
         getGroups()
     }, []);
 
+    useEffect(() => {
+        setHomeFocus(true);
+        setListFocus(false);
+        setGroupFocus(false);
+    }, []);
+
     return (
         <div>
             {isMobile ? (
@@ -70,9 +81,9 @@ export const Dashboard = () => {
                             {loading ? (
                                 <CircularProgress/>
                             ) : (
-                                <Swiper navigation={true} className='mySwiper' spaceBetween={50} slidesPerView={1}>
+                                <Swiper className='mySwiper' spaceBetween={50} slidesPerView={1}>
                                     {habitsList.map((habit) => (
-                                        <SwiperSlide>
+                                        <SwiperSlide key={habit.id}>
                                             <Card>
                                                 <p className='item-title'><strong>{habit.title}</strong></p>
                                                 <p className='item-category'><strong>Categoria: </strong>{habit.category}</p>
@@ -82,11 +93,11 @@ export const Dashboard = () => {
                                 </Swiper>                            
                             )} 
                             <h1>Grupos</h1>
-                            <Swiper navigation={true} className='mySwiper'>
+                            <Swiper className='mySwiper'>
                                 {groups.map((group) => {
                                     if (!!group.users_on_group.find(user => user.id === Number(id))) {
                                         return (
-                                            <SwiperSlide navigation={true} key={group.id}>
+                                            <SwiperSlide key={group.id}>
                                                 <Card>
                                                     <p className='item-title'><strong>{group.name}</strong></p>
                                                     <p className='item-category'><strong>Categoria: </strong>{group.category}</p>
@@ -100,7 +111,9 @@ export const Dashboard = () => {
                     </MobileContainer>
                 </>                
             ) : (
-                <>
+                <div style={{display: 'flex',
+                    flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                    <User/>
                     <SideNavigationMenu/>
                     <DesktopContainer>
                         <h1>Hábitos</h1>
@@ -109,7 +122,7 @@ export const Dashboard = () => {
                         ) : (
                             <CardsContainer>
                                 {habitsList.map((habit) => (
-                                    <Card>
+                                    <Card key={habit.id}>
                                         <p className='item-title'><strong>{habit.title}</strong></p>
                                         <p className='item-difficulty'><strong>Dificuldade: </strong>{habit.difficulty}</p>
                                         <p className='item-category'><strong>Categoria: </strong>{habit.category}</p>
@@ -132,7 +145,7 @@ export const Dashboard = () => {
                             })}
                         </CardsContainer>
                     </DesktopContainer>
-                </>
+                </div>
             )}
             
         </div>

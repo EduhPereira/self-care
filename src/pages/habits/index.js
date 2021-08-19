@@ -19,6 +19,8 @@ import { NotFoundMsg } from "../../components/notFoundMsg";
 import { SideNavigationMenu } from "../../components/sideNavigationMenu";
 import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { User } from "../../components/user";
+import { useContext } from 'react';
+import { MenuItemFocusContext } from '../../providers/menuItemFocus';
 
 export const Habits = () => {
   const { id, token } = useUser();
@@ -30,6 +32,8 @@ export const Habits = () => {
   const [loading, setLoading] = useState(true);
   const [control, setControl] = useState("Todas");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  const { setHomeFocus, setListFocus, setGroupFocus } = useContext(MenuItemFocusContext);
 
   const updateMedia = () => {
     setIsMobile(window.innerWidth < 768);
@@ -46,13 +50,20 @@ export const Habits = () => {
   };
 
   useEffect(() => {
-    habits();
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
   });
 
   useEffect(() => {
+    const ac = new AbortController();
     habits();
+    return () => ac.abort();    
+  }, []);
+
+  useEffect(() => {
+    setHomeFocus(false);
+    setListFocus(true);
+    setGroupFocus(false);
   }, []);
 
   const deleteHabit = async (id) => {
@@ -151,11 +162,11 @@ export const Habits = () => {
                   <>
                     {habitsList.map((el) => {
                       return (
-                        <Card>
-                          <p className="Title">
+                        <Card key={el.id}>
+                          <div className="Title">
                             <p className="Habit">Hábito: </p>
                             <p>{el.title}</p>
-                          </p>
+                          </div>
                           <p className="Difficulty">
                             <span>Dificuldade:</span> {el.difficulty}
                           </p>
@@ -203,11 +214,11 @@ export const Habits = () => {
                   <>
                     {habitListFilter.map((el) => {
                       return (
-                        <Card>
-                          <p className="Title">
+                        <Card key={el.id}>
+                          <div className="Title">
                             <p className="Habit">Hábito: </p>
                             <p>{el.title}</p>
-                          </p>
+                          </div>
                           <p className="Difficulty">
                             <span>Dificuldade:</span> {el.difficulty}
                           </p>

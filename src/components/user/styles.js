@@ -8,6 +8,10 @@ export const Container = styled.div`
   margin-top: 20px;
   position: relative;
 
+  p{
+    margin: 0;
+  }
+
   img {
     width: 94px;
   }

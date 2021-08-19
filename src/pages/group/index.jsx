@@ -8,6 +8,7 @@ import { BottomNavigationMenu } from "../../components/bottomNavigationMenu";
 import { GroupGoals } from "../../components/groupsGoals";
 import { useContext } from 'react';
 import { MenuItemFocusContext } from '../../providers/menuItemFocus';
+import { User } from "../../components/user";
 
 export const Group = () => {
   const params = useParams();

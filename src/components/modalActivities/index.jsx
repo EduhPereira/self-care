@@ -32,7 +32,7 @@ export const ModalActivities = ({
     reset,
     formState: { errors },
   } = useForm({
-    reslver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
 
   const closeModal = () => {

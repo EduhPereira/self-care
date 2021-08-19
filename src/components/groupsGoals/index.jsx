@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { useUser } from "../../providers/UserProvider";
 import { toast } from "react-toastify";
 import { ModalGoalsEdit } from "../modalGoalsEdit";
+import { Cards, Card, Buttons, PreviousButton, NextButton } from "./styles";
+import { FaEdit, FaCheck } from "react-icons/fa";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 export const GroupGoals = ({ GroupId }) => {
   const [updater, setUpdater] = useState(0);
@@ -13,8 +16,8 @@ export const GroupGoals = ({ GroupId }) => {
   const [page, setPage] = useState(1);
   const [group, setGroup] = useState(GroupId);
   const { id, token } = useUser();
-  const [visible, setVisible] = useState(false)
-  const [idGoal, setIdGoal] = useState(0)
+  const [visible, setVisible] = useState(false);
+  const [idGoal, setIdGoal] = useState(0);
 
   useEffect(() => {
     api
@@ -55,7 +58,7 @@ export const GroupGoals = ({ GroupId }) => {
 
   const handleDelete = (id) => {
     api
-      .delete(`/goals/${id}`, {
+      .delete(`/goals/${id}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,16 +78,16 @@ export const GroupGoals = ({ GroupId }) => {
   };
 
   const handleEdit = (id) => {
-    setIdGoal(id)
-    setVisible(true)
-  }
+    setIdGoal(id);
+    setVisible(true);
+  };
 
   return (
     <>
-      <ModalGoalsEdit 
-      visible={visible}
-      setVisible={setVisible}
-      idGoal={idGoal}
+      <ModalGoalsEdit
+        visible={visible}
+        setVisible={setVisible}
+        idGoal={idGoal}
       />
 
       <h2>Adicionar uma nova meta</h2>
@@ -113,23 +116,41 @@ export const GroupGoals = ({ GroupId }) => {
         <button type="submit">Adicionar</button>
       </form>
 
-      <h2>Metas do Grupo</h2>
-      {goalsList.map((goal) => {
-        return (
-          <div key={goal.id}>
-            <div>{goal.title}</div>
-            <div>{goal.difficulty}</div>
-            <div>{goal.how_much_achieved}</div>
-            <div>
-              <button onClick={() => handleEdit(goal.id)}>Editar</button>
-              <button onClick={() => handleDelete(goal.id)}>Deletar</button>
-              <button>Check</button>
-            </div>
-          </div>
-        );
-      })}
-      <button onClick={handlePrevious}>Anterior</button>
-      <button onClick={handleNext}>Próxima</button>
+      <Cards>
+        <h2>Metas do Grupo</h2>
+        {goalsList.map((goal) => {
+          return (
+            <Card key={goal.id}>
+              <div>
+                <span>Meta: </span>
+                {goal.title}
+              </div>
+              <div>
+                <span>Dificuldade: </span>
+                {goal.difficulty}
+              </div>
+              <div>
+                <span>Quanto Conquistado: </span>
+                {goal.how_much_achieved}
+              </div>
+              <Buttons>
+                <button onClick={() => handleEdit(goal.id)}>
+                  <FaEdit className="Edit" />
+                </button>
+                <button onClick={() => handleDelete(goal.id)}>
+                  <RiDeleteBin2Line className="Delete" />
+                </button>
+                <button>
+                  <FaCheck className="Check" />
+                </button>
+              </Buttons>
+            </Card>
+          );
+        })}
+      </Cards>
+
+      <PreviousButton onClick={handlePrevious}>Anterior</PreviousButton>
+      <NextButton onClick={handleNext}>Próxima</NextButton>
     </>
   );
 };

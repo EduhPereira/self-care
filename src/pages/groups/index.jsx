@@ -71,9 +71,6 @@ export const Groups = () => {
                 }
             })
         }).catch(err => toast.error("Erro ao criar grupo, tente mais tarde."));
-        setPage(2);
-        setGroups([]);
-        getGroups();
         getSubscriptions();
         setShowModal(false);
     }
@@ -234,7 +231,7 @@ export const Groups = () => {
                                 </select>
                                 <ContainerButtons>
                                     <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
-                                    <button className="update" type="submit" onClick={() => setShowModal(false)}>Criar</button>
+                                    <button className="update" type="submit">Criar</button>
                                 </ContainerButtons>
                             </Form>
                         </ModalDiv>

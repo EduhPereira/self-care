@@ -123,6 +123,8 @@ export const Groups = () => {
     });
 
     useEffect(() => {
+        setPage(1);
+        setGroups([]);
         getGroups();
         getSubscriptions();
     }, [])

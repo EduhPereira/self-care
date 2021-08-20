@@ -41,7 +41,7 @@ export const Button = styled.button`
     border-radius: 11px;
     margin-top: 25px;
     font-weight: 600;
-    background-color: ${props => (props.showList ? "#285BD3" : "#efefef")};
+    background-color: ${props => (props.showList ? "#285BD3" : "#fff")};
     color: ${props => (props.showList ? "#fff" : "#000")};
 `
 
@@ -50,7 +50,7 @@ export const MobileButton = styled.button`
     height: 40px;
     border: none;
     font-weight: 600;
-    background-color: ${props => (props.showList ? "#285BD3" : "#efefef")};
+    background-color: ${props => (props.showList ? "#285BD3" : "#fff")};
     color: ${props => (props.showList ? "#fff" : "#000")};
 `
 

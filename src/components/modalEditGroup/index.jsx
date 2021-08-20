@@ -41,13 +41,21 @@ export const ModalEditGroup = ({ showModal, setShowModal }) => {
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h2>Criar Grupo</h2>
                 <label htmlFor="name">Nome: <span>{errors.name?.message}</span></label>
-                <input type="text" placeholder={currentGroup.name} {...register("name")} />
+                <input type="text" defaultValue={currentGroup.name} {...register("name")} />
 
                 <label htmlFor="description">Descrição: <span>{errors.description?.message}</span></label>
-                <input type="text" placeholder={currentGroup.description} {...register("description")} />
+                <input type="text" defaultValue={currentGroup.description} {...register("description")} />
 
                 <label htmlFor="category">Categoria: <span>{errors.category?.message}</span></label>
-                <input type="text" placeholder={currentGroup.category} {...register("category")} />
+                <select name="category" {...register("category")}>
+                    <option value={currentGroup.category}>Categora Atual - {currentGroup.category}</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Música">Música</option>
+                    <option value="Aventura">Aventura</option>
+                    <option value="Estudos">Estudos</option>
+                    <option value="Religão">Religão</option>
+                    <option value="Esporte">Esporte</option>
+                </select>
                 <ContainerButtons>
                     <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
                     <button className="update" type="submit">Editar</button>

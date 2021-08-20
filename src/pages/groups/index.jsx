@@ -71,9 +71,6 @@ export const Groups = () => {
                 }
             })
         }).catch(err => toast.error("Erro ao criar grupo, tente mais tarde."));
-        setPage(2);
-        setGroups([]);
-        getGroups();
         getSubscriptions();
         setShowModal(false);
     }
@@ -83,13 +80,13 @@ export const Groups = () => {
         api
             .get(`/groups/?page=${page}`)
             .then(res => {
+                setLoading(false)
                 setGroups([...groups, ...res.data.results])
                 verifyNextPage(res.data.next)
             })
             .catch(err =>
                 toast.error("Erro ao carregar todos os grupos, reinicie a página (F5)")
             );
-        setLoading(false)
     }
 
     const getSubscriptions = () => {
@@ -126,6 +123,8 @@ export const Groups = () => {
     });
 
     useEffect(() => {
+        setPage(1);
+        setGroups([]);
         getGroups();
         getSubscriptions();
     }, [])
@@ -234,7 +233,7 @@ export const Groups = () => {
                                 </select>
                                 <ContainerButtons>
                                     <button type="button" onClick={() => setShowModal(false)}> Cancelar</button>
-                                    <button className="update" type="submit" onClick={() => setShowModal(false)}>Criar</button>
+                                    <button className="update" type="submit">Criar</button>
                                 </ContainerButtons>
                             </Form>
                         </ModalDiv>
@@ -245,7 +244,6 @@ export const Groups = () => {
                             <span onClick={() => setShowModal(true)}>Criar seu grupo</span>
                         </section>
                         <section>
-                            {loading && <CircularProgress />}
                             {(showList ? (groups.map(item => (
                                 !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
                                     key={item.id}
@@ -257,6 +255,7 @@ export const Groups = () => {
                                 <CardGroup key={item.id} group={item} registered />
                             )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                             )}
+                            {(loading && showList) && <CircularProgress />}
                         </section>
                     </Container>
                 </>

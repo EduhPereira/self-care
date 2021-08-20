@@ -15,7 +15,7 @@ export const Form = styled.form`
     transition: 0.2s;
     width: 270px;
     transform: ${(props) =>
-        `${props.showModal ? "translateY(0%)" : "translateY(20%)"}`};
+        `${props.showModal ? "translateY(0%)" : "translateY(10%)"}`};
     background: white;
     margin: 30px auto;
     display: flex;
@@ -40,6 +40,19 @@ export const Form = styled.form`
         border-radius: 5px;
         border: 1px solid #969696;
         outline: none;
+    }
+
+    select {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #969696;
+        background: white;
+        outline: none;
+
+        option {
+            font-weight: bold;
+        }
     }
 
     label {

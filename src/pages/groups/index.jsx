@@ -80,13 +80,13 @@ export const Groups = () => {
         api
             .get(`/groups/?page=${page}`)
             .then(res => {
+                setLoading(false)
                 setGroups([...groups, ...res.data.results])
                 verifyNextPage(res.data.next)
             })
             .catch(err =>
                 toast.error("Erro ao carregar todos os grupos, reinicie a página (F5)")
             );
-        setLoading(false)
     }
 
     const getSubscriptions = () => {
@@ -244,7 +244,6 @@ export const Groups = () => {
                             <span onClick={() => setShowModal(true)}>Criar seu grupo</span>
                         </section>
                         <section>
-                            {loading && <CircularProgress />}
                             {(showList ? (groups.map(item => (
                                 !!!item.users_on_group.find(user => user.id === Number(id)) && < CardGroup
                                     key={item.id}
@@ -256,6 +255,7 @@ export const Groups = () => {
                                 <CardGroup key={item.id} group={item} registered />
                             )) : (<NotFoundMsg>Você não possui Grupos</NotFoundMsg>))
                             )}
+                            {(loading && showList) && <CircularProgress />}
                         </section>
                     </Container>
                 </>

@@ -4,7 +4,10 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: rgba(1, 1, 1, 0.7);
   font-family: "Poppins", sans-serif;
   transition: 0.2s;
@@ -27,6 +30,7 @@ export const Container = styled.div`
     text-align: center;
     margin-bottom: 20px;
     font-weight: 500;
+    font-size: 1.3rem;
   }
 
   form label {
@@ -41,13 +45,7 @@ export const Container = styled.div`
     border: 1px solid #969696;
   }
 
-  form select {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #969696;
-    background: white;
-  }
+
 
   @keyframes modal {
     from {
@@ -57,14 +55,15 @@ export const Container = styled.div`
   }
 
   
+
+  
 `;
 
 export const Buttons = styled.div`
   display: flex;
   flex-direction: row;
-  margin: auto;
-  justify-content: center;
-  align-items: center;
+  margin: 20px auto;
+  
 
   button {
     color: white;

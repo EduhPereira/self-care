@@ -7,9 +7,12 @@ import logo from "../../assets/self-care.png";
 import loginImg from "../../assets/login.png";
 import { Link, useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
+import { useUser } from "../../providers/UserProvider";
 
 export const Login = () => {
   const history = useHistory();
+  const { setIsLoggedIn } = useUser();
 
   const schema = yup.object().shape({
     username: yup.string().required("*Campo obrigatório"),
@@ -25,15 +28,26 @@ export const Login = () => {
   });
 
   const onSubmit = async ({ username, password }) => {
-    const response = await api.post("/sessions/", { username, password });
-    const access = await response.data.access;
-    const token = access;
-    const decode = jwt_decode(token);
-    const { user_id } = decode;
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("user_id", user_id);
-    history.push("/dashboard");
+    try {
+      const response = await api.post("/sessions/", { username, password });
+      const access = await response.data.access;
+      toast.success("Sucesso ao entrar");
+      const token = access;
+      const decode = jwt_decode(token);
+      const { user_id } = decode;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user_id", user_id);
+      localStorage.getItem(user_id);
+    
+      setIsLoggedIn(true);
+      if (user_id !== 0) {
+        history.push("/dashboard");
+      } else {
+        toast.error("Erro ao entrar na conta");
+      }
+    } catch (e) {
+      toast.error("Erro ao entrar na conta");
+    }
   };
 
   return (

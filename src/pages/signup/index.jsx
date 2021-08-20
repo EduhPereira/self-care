@@ -3,15 +3,16 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api } from "../../services/api";
 import { useHistory } from "react-router-dom";
-import { Background, Container } from "./style";
-import logo from "../../assets/self-care.png";
-import loginImg from "../../assets/signup.svg";
-// import { toast } from "react-toastify";
+import { Container } from "./style";
+import { Background } from "../login/styles";
+import loginImg from "../../assets/signup.png"
+import logo from "../../assets/self-care.png"
+import { toast } from "react-toastify";
 
 export const Signup = () => {
   // contrução do objeto e verificação
   const schema = yup.object().shape({
-    username: yup.string().required("Campo Obrigatório."), // regex nome sem caractere especial e spaço
+    username: yup.string().required("Campo Obrigatório.").trim().matches(/^[\S]+$/, "Nomes compostos não são aceitos."), // regex nome sem caractere especial e spaço
     email: yup.string().email("Email Inválido").required("Campo Obrigatório."),
     password: yup
       .string()
@@ -41,10 +42,10 @@ export const Signup = () => {
     api
       .post("/users/", user)
       .then((res) => {
-        console.log(res);
+        toast.success("Conta criada com sucesso!");
         return history.push("/login");
       })
-      .catch((err) => console.log(err, user));
+      .catch((err) => toast.error("Nome ou e-mail já cadastrado!"));
   };
 
   return (
@@ -52,31 +53,31 @@ export const Signup = () => {
       <Background>
         <img src={loginImg} />
       </Background>
-      <section className="login">
+      <div className="signup">
         <header>
           <img src={logo} />
           <p>Crie sua Conta</p>
         </header>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="username">
-            Nome <span>{errors.username && errors.username.message}</span>
+            Nome: <span>{errors.username && errors.username.message}</span>
           </label>
           <input type="text" {...register("username")} />
 
           <label htmlFor="email">
-            Email <span>{errors.email?.message}</span>
+            Email: <span>{errors.email?.message}</span>
           </label>
           <input type="text" {...register("email")} />
 
           <label htmlFor="password">
-            Senha <span>{errors.password?.message}</span>
+            Senha: <span>{errors.password?.message}</span>
           </label>
-          <input type="text" {...register("password")} />
+          <input type="password" {...register("password")} />
 
           <label htmlFor="passwordConfirm">
-            Confirmar Senha <span>{errors.passwordConfirm?.message}</span>
+            Confirmar Senha: <span>{errors.passwordConfirm?.message}</span>
           </label>
-          <input type="text" {...register("passwordConfirm")} />
+          <input type="password" {...register("passwordConfirm")} />
 
           <button type="submit">Enviar</button>
           <p>
@@ -84,7 +85,7 @@ export const Signup = () => {
             <span onClick={() => history.push("/login")}>Entre</span>
           </p>
         </form>
-      </section>
+      </div>
     </Container>
   );
 };

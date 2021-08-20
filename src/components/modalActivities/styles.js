@@ -3,8 +3,11 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  top: -15;
+  left: 0;
+  bottom: 0;
+  right: 0;
   position: fixed;
-  z-index: 1000;
   background: rgba(1, 1, 1, 0.7);
   font-family: "Poppins", sans-serif;
   transition: 0.2s;
@@ -55,8 +58,6 @@ export const Container = styled.div`
       opacity: 0;
     }
   }
-
-  
 `;
 
 export const Buttons = styled.div`
@@ -81,5 +82,9 @@ export const Buttons = styled.div`
 
   .update {
     background: #36b520;
+  }
+
+  .ant-picker-input {
+    border: none;
   }
 `;

@@ -4,7 +4,10 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
-  z-index: 1000;
+  top: -15px;
+  left: 0;
+  bottom: 0;
+  right: 0;
   background: rgba(1, 1, 1, 0.7);
   font-family: "Poppins", sans-serif;
   transition: 0.2s;

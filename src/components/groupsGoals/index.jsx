@@ -70,6 +70,7 @@ export const GroupGoals = ({ GroupId }) => {
         },
       })
       .then(toast.success("✅ Nova Meta Adicionada"))
+      .then(setUpdater(updater + 1))
       .catch((err) => toast.error(`❌ ${err}`));
     setVisible(false);
   };
@@ -81,7 +82,10 @@ export const GroupGoals = ({ GroupId }) => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(toast.warning("✔️ Meta Removida"))
+      .then((_) => {
+        toast.warning("✔️ Meta Removida");
+        setUpdater(updater + 1);
+      })
       .catch((err) => toast.error(`❌ ${err}`));
   };
 
@@ -101,6 +105,7 @@ export const GroupGoals = ({ GroupId }) => {
         },
       }
     );
+    setUpdater(updater + 1);
     toast.info("Hábito feito");
   };
 
